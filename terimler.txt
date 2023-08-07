@@ -1,0 +1,13 @@
+"Dogleg" terimi, petrol kuyularının sondajında kullanılan bir terimdir ve sondaj sırasında kuyunun yatay yönde ne kadar eğildiğini ve yönlendiğini ifade eder. "deg/30m" ise her 30 metrede bir derece olarak ifade edilen eğim değişimini temsil ediyor.
+
+MD [m]: Measured Depth - Ölçülen Derinlik, kuyunun yüzeye olan derinliği.
+
+Inc [deg]: Inclination - Eğim, kuyunun dikey eksene olan açısı
+
+TVD [m]: True Vertical Depth - Gerçek Dikey Derinlik, kuyunun dikey yönde ne kadar derine indiğini ifade eder.+
+
+Azi [deg]: Azimuth - Azimut, kuyunun kuzey doğrultusuna göre yatay yöndeki açısı
+
+Vertical Section [m]: Dikey Kesit, kuyunun yatay düzlemde kesildiği teorik düşey yüzeydir. Kuyunun eğimine göre hesaplanır ve belirli bir noktanın yüzeye olan dikey mesafesini ifade eder.
+
+Vertical Depth SS [m]: Vertical Depth Subsea - Deniz Altı Dikey Derinlik, kuyunun deniz seviyesine göre ne kadar derine indiğini ifade eder. Bu özellikle denizde yapılan kuyu sondajlarında kullanılır ve deniz yüzeyine olan derinliği temsil eder.+
