@@ -5,95 +5,98 @@
 @inject UserManager<ApplicationUser> UserManager
 
 <nav class="navbar navbar-expand-lg " style="background-color: #bb242b">
-    <div class="container-fluid">
-        <a href="/" title="Türkiye Petrolleri Anonim Ortaklığı">
-            <img src="https://www.tpvakif.org.tr/wp-content/uploads/2018/08/tp-vakif-tp-logo-haberler.png" class="mb-1" title="Türkiye Petrolleri Anonim Ortaklığı" alt="Türkiye Petrolleri Anonim Ortaklığı" style="max-height: 50px;">
-        </a>
+	<div class="container-fluid">
+		<a href="/" title="Türkiye Petrolleri Anonim Ortaklığı">
+			<img src="https://www.tpvakif.org.tr/wp-content/uploads/2018/08/tp-vakif-tp-logo-haberler.png" class="mb-1" title="Türkiye Petrolleri Anonim Ortaklığı" alt="Türkiye Petrolleri Anonim Ortaklığı" style="max-height: 50px;">
+		</a>
 
-        @*        <a class="navbar-brand" href="#" style="color: #ffffff">TPAO</a>
-        *@        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+		@*        <a class="navbar-brand" href="#" style="color: #ffffff">TPAO</a>
+		*@        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-        <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ms-auto">
-
-
-
-                <li class="nav-item">
-                    <a class="nav-link mx-2 active" aria-current="page" asp-controller="Home" asp-action="Index" style=" color: #ffffff ">Anasayfa</a>
-                </li>
-
-
-                <li class="nav-item">
-                    <a class="nav-link mx-2" asp-controller="Home" asp-action="History" style=" color: #ffffff ">Hakkımızda</a>
-                </li>
+		<div class=" collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav ms-auto">
 
 
 
+				<li class="nav-item">
+					<a class="nav-link mx-2 active" aria-current="page" asp-controller="Home" asp-action="Index" style=" color: #ffffff ">Anasayfa</a>
+				</li>
 
-                @if (User.Identity.IsAuthenticated)
-                {
 
-
-                    <li class="nav-item">
-                        <a class="nav-link mx-2" asp-controller="ViewWelltops" asp-action="AddWellTop" style=" color: #ffffff ">Kuyu Ekle</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link mx-2" asp-controller="ViewWelltops" asp-action="MainPage" style=" color: #ffffff ">Eklenen Kuyular</a>
-                    </li>
-
-                    @if (User.IsInRole("Admin"))
-                    {
-
-                        <li class="nav-item">
-                            <a class="nav-link mx-2" asp-controller="AppRoles" asp-action="AssignRole" style=" color: #ffffff ">Kullanıcı Rolleri</a>
-                        </li>
-                    }
-
-                }
-               
+				<li class="nav-item">
+					<a class="nav-link mx-2" asp-controller="Home" asp-action="History" style=" color: #ffffff ">Hakkımızda</a>
+				</li>
 
 
 
 
-            </ul>
-            <ul class="navbar-nav ms-auto d-none d-lg-inline-flex">
-                <li class="nav-item mx-2">
-                    <a class="nav-link h6" target="blank" href="https://www.instagram.com/trpetrolleri" style=" color: #ffffff "><i class="fa-brands fa-instagram"></i></a>
-                </li>
-                <li class="nav-item mx-2">
-                    <a class="nav-link h6" href="https://twitter.com/trpetrolleri?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="blank" style=" color: #ffffff "><i class="fab fa-twitter"></i></a>
-                </li>
-                <li class="nav-item mx-2">
-                    <a class="nav-link h6" href="https://www.facebook.com/trpetrolleri/?locale=tr_TR" target="blank" style=" color: #ffffff "><i class="fab fa-facebook-square"></i></a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                @if (SignInManager.IsSignedIn(User))
-                {
-                    <li class="nav-item">
-                        <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                            Hoşgeldin @UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                            <button id="logout" type="submit" class="nav-link btn btn-link text-white">Logout</button>
-                        </form>
-                    </li>
-                }
-                else
-                {
-                    <li class="nav-item">
-                        <a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Kayıt Ol</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Giriş</a>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
+				@if (User.Identity.IsAuthenticated)
+				{
+
+
+					<li class="nav-item">
+						<a class="nav-link mx-2" asp-controller="ViewWelltops" asp-action="AddWellTop" style=" color: #ffffff ">Kuyu Ekle</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link mx-2" asp-controller="ViewWelltops" asp-action="MainPage" style=" color: #ffffff ">Eklenen Kuyular</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link mx-2" asp-controller="Home" asp-action="LineSimplification" style=" color: #ffffff ">Koordinat Sadeleştirme</a>
+					</li>
+
+					@if (User.IsInRole("Admin"))
+					{
+
+						<li class="nav-item">
+							<a class="nav-link mx-2" asp-controller="AppRoles" asp-action="AssignRole" style=" color: #ffffff ">Kullanıcı Rolleri</a>
+						</li>
+					}
+
+				}
+
+
+
+
+
+			</ul>
+			<ul class="navbar-nav ms-auto d-none d-lg-inline-flex">
+				<li class="nav-item mx-2">
+					<a class="nav-link h6" target="blank" href="https://www.instagram.com/trpetrolleri" style=" color: #ffffff "><i class="fa-brands fa-instagram"></i></a>
+				</li>
+				<li class="nav-item mx-2">
+					<a class="nav-link h6" href="https://twitter.com/trpetrolleri?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="blank" style=" color: #ffffff "><i class="fab fa-twitter"></i></a>
+				</li>
+				<li class="nav-item mx-2">
+					<a class="nav-link h6" href="https://www.facebook.com/trpetrolleri/?locale=tr_TR" target="blank" style=" color: #ffffff "><i class="fab fa-facebook-square"></i></a>
+				</li>
+			</ul>
+			<ul class="navbar-nav">
+				@if (SignInManager.IsSignedIn(User))
+				{
+					<li class="nav-item">
+						<a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+							Hoşgeldin @UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName
+						</a>
+					</li>
+					<li class="nav-item">
+						<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+							<button id="logout" type="submit" class="nav-link btn btn-link text-white">Logout</button>
+						</form>
+					</li>
+				}
+				else
+				{
+					<li class="nav-item">
+						<a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Kayıt Ol</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Giriş</a>
+					</li>
+				}
+			</ul>
+		</div>
+	</div>
 </nav>
 

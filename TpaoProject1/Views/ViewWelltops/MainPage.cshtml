@@ -21,7 +21,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script>
-
+                    
         function initMap() {
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 6,
@@ -34,16 +34,7 @@
             setMarkers(map);
         }
 
-        // Data for the markers consisting of a name, a LatLng and a zIndex for the
-        // order in which these markers should display on top of each other.
-        //const beaches = [
-        //    ["Bondi Beach", 41.073710, 36.754401, 4],
-        //    ["Coogee Beach", 40.169349, 28.030877, 5],
-        //    ["Cronulla Beach", 36.987776, 33.818191, 3],
-        //    ["Manly Beach", 39.712584, 36.413971, 2],
-        //    ["Maroubra Beach", 39.137831, 30.691177, 1],
-        //];
-
+        
 
 
         @{
@@ -75,11 +66,6 @@
 
 
         function setMarkers(map) {
-            // Adds markers to the map.
-            // Marker sizes are expressed as a Size of X,Y where the origin of the image
-            // (0,0) is located in the top left of the image.
-            // Origins, anchor positions and coordinates of the marker increase in the X
-            // direction to the right and in the Y direction down.
             const image = {
 
                 url: "/css/orangedot.png",
@@ -110,9 +96,7 @@
                 // The anchor for this image is the base of the flagpole at (0, 32).
                 anchor: new google.maps.Point(0, 32),
             };
-            // Shapes define the clickable region of the icon. The type defines an HTML
-            // <area> element 'poly' which traces out a polygon as a series of X,Y points.
-            // The final coordinate closes the poly by connecting to the first coordinate.
+           
             const shape = {
                 coords: [1, 1, 1, 20, 18, 20, 18, 1],
                 type: "poly",
@@ -121,15 +105,6 @@
             for (let i = 0; i < beaches.length; i++) {
                 const beach = beaches[i];
 
-
-                //const marker = new google.maps.Marker({
-                //    position: { lat: beach[1], lng: beach[2] },
-                //    map,
-                //    icon: image,//turuncu
-                //    shape: shape,
-                //    title: beach[0],
-                //    zIndex: beach[3],
-                //});
 
 
                 if (beach[4] == "tespit") {
@@ -184,14 +159,6 @@
                         infoWindow.open(map, marker2); // Open the info window on the clicked marker
                     });
                 }
-
-                //// Add a click event listener to show the marker title in an info window
-                //marker.addListener("click", () => {
-                //    const infoWindow = new google.maps.InfoWindow({
-                //        content: beach[0], // Set the content of the info window to the marker title
-                //    });
-                //    infoWindow.open(map, marker); // Open the info window on the clicked marker
-                //});
 
 
             }
@@ -518,7 +485,7 @@
 
             </div>
             <div id="map"></div>
-            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU_pWP66-BTzvW7AnEcQRSaBPutMzWxU4&callback=initMap&v=weekly"
+            <script src="https://maps.googleapis.com/maps/api/js?key==initMap&v=weekly"
                     defer></script>
 
         </div>

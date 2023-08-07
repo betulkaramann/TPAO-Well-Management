@@ -1,0 +1,403 @@
+﻿@using Newtonsoft.Json;
+@using TpaoProject1.Model;
+
+@using Microsoft.AspNetCore.Identity
+@using TpaoProject1.Areas.Identity.Data;
+@model TpaoProject1.Model.JsonDataModel;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bootstrap Simple Data Table</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+    
+    <style>
+
+        :root {
+            --primary: #17C969;
+            --brand-gradient: linear-gradient(107.65deg,#17C969 17.53%,#005DBB 94.64%);
+            --brand-gradient-reverse: linear-gradient(107.65deg,#005DBB 17.53%,#17C969 94.64%);
+            --brand-gradient-erasebg: linear-gradient(120.55deg,#FF4040 18.56%,#A20BD8 98.01%);
+            --brand-gradient-erasebg-reverse: linear-gradient(120.55deg,#A20BD8 18.56%,#FF4040 98.01%);
+            --brand-gradient-watermark: linear-gradient(132.2deg,#F9D423 7.64%,#FF4E50 97.11%);
+            --brand-gradient-watermark-reverse: linear-gradient(132.2deg,#FF4E50 7.64%,#F9D423 97.11%);
+            --brand-gradient-shrink: linear-gradient(90.36deg,#AD00FF 0.31%,#330371 104.9%);
+            --brand-gradient-shrink-reverse: linear-gradient(120.55deg,#330371 18.56%,#AD00FF 98.01%);
+            --brand-gradient-convert: linear-gradient(92.99deg,#0148BA 1.35%,#01A5FF 104.47%);
+            --brand-gradient-convert-reverse: linear-gradient(92.99deg,#01A5FF 1.35%,#0148BA 104.47%);
+            --button-gradient: linear-gradient(107.65deg,#17C969 17.53%,#005DBB 94.64%);
+            --border-gradient: var(--button-gradient);
+            --heading-font: Inter,sans-serif;
+            --heading-font-weight: 700;
+            --subheading-font-weight: 700;
+            --bold-font-weight: 600;
+            --body-font: Inter,sans-serif;
+            --bg-color: #101112;
+            --secondary-bg-color: rgba(255,255,255,0.02);
+            --bg-color-80: rgba(16,17,18,0.8);
+            --error: #C13C3C;
+            --border-color: #323232;
+            --secondary-bg: #005DBB;
+            --secondary-border-color: #17C969;
+            --button-border: #005DBB;
+            --button-border-erasebg: #A50CD4;
+            --secondary-button-border: #323232;
+            --border-radius-20: 20px;
+            --border-radius-16: 16px;
+            --border-radius-10: 10px;
+            --border-radius-12: 12px;
+            --border-radius-8: 8px;
+            --letter-spacing: normal;
+            --white-100: rgba(255,255,255,1);
+            --white-90: rgba(255,255,255,0.9);
+            --white-80: rgba(255,255,255,0.8);
+            --white-70: rgba(255,255,255,0.7);
+            --white-12: rgba(255,255,255,0.12);
+            --white-4: rgba(255,255,255,0.04);
+            --banner-title-max-width: 1039px;
+            --banner-description-max-width: 795px;
+            --section-description-max-width: 795px;
+            --content-max-width: 450px;
+            --gray-200: #C6CFE2;
+            --grey-300: #AAABC5;
+            --grey-400: #49494F;
+            --grey-500: #303233;
+            --grey-600: #242525;
+            --grey-700: #1A1B1B;
+            --grey-800: #1D202A;
+            --grey-900: #171921;
+            --grey-1000: #151617;
+            --black: #101112;
+            --h1-d: 48px;
+            --h1-m: 28px;
+            --h2-d: 40px;
+            --h2-m: 24px;
+            --h3-d: 34px;
+            --h3-m: 20px;
+            --subtitle-1-d: 24px;
+            --subtitle-1-m: 18px;
+            --subtitle-2-d: 20px;
+            --subtitle-2-m: 16px;
+            --body-1-d: 18px;
+            --body-1-m: 16px;
+            --body-2-d: 16px;
+            --body-2-m: 14px;
+            --body-3-d: 14px;
+            --body-3-m: 12px;
+            --body-4-d: 12px;
+            --body-4-m: 10px;
+            --caption-1-d: 14px;
+            --letter-spacing-1: 1.2px;
+            --letter-spacing-2: 1px;
+            --letter-spacing-3: 0.6px;
+            --letter-spacing-4: 0.5px;
+            --line-height-62: 62px;
+            --line-height-58: 58px;
+            --line-height-56: 56px;
+            --line-height-49: 49px;
+            --line-height-40: 40px;
+            --line-height-36: 36px;
+            --line-height-34: 34px;
+            --line-height-32: 32px;
+            --line-height-28: 28px;
+            --line-height-12: 22px;
+            --line-height-16: 16px;
+            --line-height-18: 18px;
+            --line-height-22: 22px;
+            --line-height-20: 20px;
+            --line-height-120: 120%;
+            --line-height-150: 150%;
+            --tooltip-text-color: rgba(255,255,255,0.8);
+            --tooltip-background-color: #49494F;
+            --tooltip-margin: 20px;
+            --tooltip-arrow-size: 6px;
+        }
+
+        .fIGwjR {
+            max-width: 1200px;
+            padding: 0px 20px;
+            margin: 0px auto;
+        }
+
+        .kTwAJW {
+            max-width: 750px;
+            margin: 40px auto 0px;
+            text-align: center;
+        }
+
+        .dEBCvL {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            margin: 40px auto 80px;
+            max-width: 600px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .Tyvht {
+            display: flex;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .gHEHFI {
+            display: flex;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            width: 100%;
+            height: auto;
+        }
+
+        .kbmqOG {
+            display: flex;
+            flex-direction: column;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+        }
+
+        .jblypF {
+            display: flex;
+            flex-direction: column;
+            -webkit-box-align: center;
+            align-items: center;
+            text-align: center;
+            background-color: #bb242b;
+            width: 20%;
+            padding: 16px;
+            border-radius: 0px;
+            border-radius: 8px;
+            border: 2px solid rgb(37, 54, 70);
+        }
+
+        .ipUDSd {
+            width: auto;
+            height: 60px;
+            background: var(--brand-gradient);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            padding: 0px 22px;
+            font-family: var(--body-font);
+            font-style: normal;
+            letter-spacing: var(--letter-spacing);
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 150%;
+            color: var(--white-90);
+            border-radius: var(--border-radius-10);
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .eSlaav {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ddmRyP {
+            width: 20px;
+            height: 20px;
+        }
+
+        .bJuAfh {
+            font-family: var(--body-font);
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 29px;
+            letter-spacing: 0.03em;
+            color: var(--white-80);
+        }
+
+        .hRkHyi {
+            margin-top: 15px;
+        }
+
+
+        .ddmRyP {
+            width: 20px;
+            height: 20px;
+        }
+
+        .ipUDSd {
+            width: auto;
+            height: 60px;
+            background: var(--brand-gradient);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            padding: 0px 22px;
+            font-family: var(--body-font);
+            font-style: normal;
+            letter-spacing: var(--letter-spacing);
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 150%;
+            color: var(--white-90);
+            border-radius: var(--border-radius-10);
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .fIGwjR {
+            max-width: 1200px;
+            padding: 0px 20px;
+            margin: 0px auto;
+        }
+
+        .grid {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-color: #d3f8e2;
+            width: 100%;
+            padding: 16px;
+            border-radius: 8px;
+            border: 2px solid rgb(37, 54, 70);
+        }
+
+        .table-responsive {
+            margin: 30px 0;
+        }
+
+        #map {
+            height: 400px;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: #566787;
+            background: #f5f5f5;
+            font-family: 'Roboto', sans-serif;
+        }
+
+
+
+        .p-tag {
+            margin: 0.8rem 0 0;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: -0.032rem;
+            text-align: center;
+            color: var(--black);
+        }
+
+        .h1-tag {
+            font-size: 2.8rem;
+            margin: 0;
+            font-weight: 600;
+            font-stretch: normal;
+            line-height: 1.5;
+            letter-spacing: 0.033rem;
+            color: var(--black);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .table-responsive {
+            max-height: 300px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $("#jsonFileInput").on("change", function () {
+                if (this.files.length > 0) {
+                    const formData = new FormData($("#uploadForm")[0]);
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/UploadJson", // controller path
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            
+                            Swal.fire({
+                                title: 'Başarılı!',
+                                text: 'Dosya başarıyla yüklendi!',
+                                icon: 'success',
+                                confirmButtonText: 'Tamam'
+                            });
+                            setTimeout(function(){ 
+                                window.location.href = "/Home/ViewMap";
+                            },1000);
+                           
+                            
+                        },
+                        error: function (error) {
+                            Swal.fire({
+                                title: 'Üzgünüz!',
+                                text: 'Dosya yüklenemedi!',
+                                icon: 'error',
+                                confirmButtonText: 'Tamam'
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <div style="position: absolute; left: 0px; top: 0px; z-index: 107; width: 100%;"></div>
+    <div class="global-styled-components__Container-sc-b9pb9l-0 fIGwjR grid">
+        <h2 class="global-styled-components__H1-sc-b9pb9l-3 Upload__StyledH1-sc-11jl0r6-0 gkkdba kTwAJW">Sismik Veri Sadeleştirme Sayfası</h2>
+
+        <h6 class="global-styled-components__H1-sc-b9pb9l-3 Upload__StyledH1-sc-11jl0r6-0 gkkdba kTwAJW">Dosya formatı aşağıdaki şekilde olmalıdır.</h6>
+
+        <div class="Upload__UploadContainer-sc-11jl0r6-1 dEBCvL">
+            <div class="Upload__UploadWrapper-sc-11jl0r6-2 kbmqOG">
+                <div class="Upload__DropText-sc-11jl0r6-3 eSlaav">
+                    <div class="SupportedFormats__Content-sc-1lsf5mw-0 SupportedFormats__FormatWrapper-sc-1lsf5mw-1 mb-4">
+                        <div class="SupportedFormats__Label-sc-1lsf5mw-2 jWxHwJ">Kabul Edilen Formatlar: .json</div>
+                    </div>
+                </div>
+
+                <form id="uploadForm" method="post" asp-action="ViewMap" asp-controller="Home">
+                    <div id="UploadExcel__HomePage" class="Upload__StyledButton-sc-11jl0r6-7 ipUDSd" style="display: flex; justify-content: center; align-items: center;,">
+                        <input style="text-align:center;" type="file" accept=".json, .csv" name="jsonFile" id="jsonFileInput" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<partial name="_NotificationPartial" />
