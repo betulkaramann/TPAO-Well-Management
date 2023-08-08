@@ -33,7 +33,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
     // Other options you might have
-    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedAccount = false;
 })
 .AddDefaultTokenProviders()
 .AddRoles<IdentityRole>()
@@ -97,3 +97,5 @@ app.MapRazorPages();
 
 
 app.Run();
+
+

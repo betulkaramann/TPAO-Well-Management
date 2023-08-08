@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+</head>
+<body>
+    <input type="file" id="excelFileInput">
+    <div id="readData"></div>
+    <script>
+        function degrees_to_radians(degrees) {
+            return degrees * (Math.PI / 180);
+        }
+        document.getElementById('excelFileInput').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var data = new Uint8Array(e.target.result);
+                var workbook = XLSX.read(data, { type: 'array' });
+                var sheetName = workbook.SheetNames[0];
+                var sheet = workbook.Sheets[sheetName];
+                var rows = XLSX.utils.sheet_to_json(sheet);
+
+                var md = rows.map(row => parseFloat(row['MD[m]']));
+                var inc = rows.map(row => parseFloat(row['Inc[deg]']));
+                var azi = rows.map(row => parseFloat(row['Azi[deg]']));
+                var tdv = rows.map(row => parseFloat(row['TVD[m]']));
+                var dogleg = rows.map(row => parseFloat(row['Dogleg[deg/30m]']));
+                var ss = rows.map(row => parseFloat(row['Vertical-Depth-SS[m]']));
+                var w = rows.map(row => parseFloat(row['w']));
+
+                var pointsX = [];
+                var pointsY = [];
+                var pointsZ = [];
+                var uArray = []; 
+                var vArray = [];
+                var wArray = [];
+                var A = 1;
+                var B = 0.8124;
+                var C = 0.5773;
+                //North - Y - Axis = MD / 2 * [Sin(I1) * Cos(Az1) + Sin(I2) * Cos(Az2)] * RF
+               // East - X - Axes = MD / 2 * [Sin(I1) * Sin(Az1) + Sin(I2) * Sin(Az2)] * RF
+               // TVD - Z - Axes = MD / 2 * [Cos(I1) + Cos(I2)] * RF
+
+                for (var i = 0; i < md.length; i++) {
+                    var depth = md[i];
+                    var azimuth1 = degrees_to_radians(azi[i]); 
+                    var inclination1 = degrees_to_radians(inc[i]);
+                    var azimuth2 = degrees_to_radians(azi[i + 1]);
+                    var inclination2 = degrees_to_radians(inc[i + 1]);
+                    let beta_cal = degrees_to_radians(Math.acos(Math.cos(inclination1 - inclination2) - Math.sin(inclination1) * Math.sin(inclination2) * 1 - Math.cos(azimuth2 - azimuth1)));
+
+                    if (beta_cal == 0) {
+                        beta_cal = degrees_to_radians(Math.pow(10, -100));
+                    }
+                    var RF_cal = (2 / beta_cal) * Math.tan(beta_cal / 2);
+
+                    var x = (depth / 2) * ((Math.sin(inclination2) * Math.cos(azimuth1)) + (Math.sin(inclination2) * Math.cos(azimuth2) * RF_cal));
+                    var y = (depth / 2) * ((Math.sin(inclination2) * Math.sin(azimuth1)) + (Math.sin(inclination2) * Math.sin(azimuth2) * RF_cal)); 
+                    var z = (depth / 2) * ((Math.cos(inclination1) * Math.cos(inclination2)) * RF_cal); 
+                    pointsX.push(x);
+                    pointsY.push(y);
+                    pointsZ.push(z);
+                   // var y = depth * Math.sin(azimuth * (Math.PI / 180)); // "y" hesaplaması
+                    //var z = tdv[i];
+                     
+                    var u = 1 * Math.sin(z) + Math.sqrt(1.0 / 3) * Math.cos(y);
+                    var v = Math.sqrt(2.0 / 3) * Math.sin(x) + 1 * Math.cos(z);
+                    var w = Math.sqrt(1.0 / 3) * Math.sin(y) + Math.sqrt(2.0 / 3) * Math.cos(x);
+
+                    uArray.push(u);
+                    vArray.push(v);
+                    wArray.push(w);
+
+                    //if (inclination !== 0) {
+                    //    z = z + depth * Math.sin(inclination * (Math.PI / 180));
+                    //}
+
+                    //pointsX.push(x);
+                    //pointsY.push(y);
+                    //pointsZ.push(z);
+                    //var uValue = (A * Math.sin(z)) + (C * Math.cos(y));
+                    //var vValue = (B * Math.sin(x)) + (A * Math.cos(z));
+                    //var wValue = (C * Math.sin(y)) + (B * Math.cos(z));
+                    //uArray.push(uValue);
+                    //vArray.push(vValue);
+                    //wArray.push(wValue);
+                    
+                }
+
+
+                var data = [{
+                    type: 'streamtube',
+                    x: pointsX,
+                    y: pointsY,
+                    z: pointsZ,
+                    u: uArray,
+                    v: vArray,
+                    w: wArray,
+                    colorscale: [[0, 'blue'], [1, 'red']],
+                    colorbar: { title: 'Cevat' },
+                    sizeref: 0.3,
+                    
+                   
+                }
+                
+                ];
+
+                var layout = {
+                    scene: {
+                        aspectratio: {
+                            x: 2,
+                            y: 1,
+                            z: 0.3
+                        }
+                    },
+                    margin: {
+                        t: 20,
+                        b: 20,
+                        l: 20,
+                        r: 20
+                    },
+                    width: 900,
+                    height: 600
+                };
+
+                Plotly.newPlot('readData', data, layout);
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
+
+</body>
+</html>

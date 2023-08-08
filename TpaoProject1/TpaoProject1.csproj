@@ -23,8 +23,19 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.15" />
     <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
+    <PackageReference Include="Plotly.NET" Version="4.2.0" />
     <PackageReference Include="X.PagedList" Version="8.4.7" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeoSimplifier\GeoSimplifier.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="GeoSimplifier">
+      <HintPath>..\..\Line-simplification--unit-testing-functions\GeoSimplifier\bin\Debug\net6.0\GeoSimplifier.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
