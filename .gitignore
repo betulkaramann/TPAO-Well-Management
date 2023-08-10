@@ -7,16 +7,10 @@
 /TpaoProject1/Model/WellTop.cs
 /TpaoProject1/Services
 TpaoProject1/appsettings.json
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
 *.1
 *.vsidx
 *.dll
 /TpaoProject1/obj/Debug/net6.0/ref/TpaoProject1.dll
-<<<<<<< Updated upstream
 /TpaoProject1/bin/Debug/net6.0/TpaoProject1.pdb
 /TpaoProject1/bin/Debug/net6.0/TpaoProject1.dll
 *.bin
@@ -25,6 +19,5 @@ TpaoProject1/appsettings.json
 .vs/TpaoProject1/v17/.suo
 *.dll
 *.cache
-=======
->>>>>>> ea62d2ef569b564c19b02228148ec388913131e9
->>>>>>> Stashed changes
+*.json
+*.txt

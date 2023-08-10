@@ -51,7 +51,7 @@ namespace TpaoProject1.Controllers
                 string city = null;
                 double lati = double.Parse(model.Latitude);//enlem- paralel 36-42
                 double longi = double.Parse(model.Longitude);//boylam - meridyen 26-45
-                string apiKey = "YOUR_API_KEY";
+                string apiKey = "AIzaSyDU_pWP66-BTzvW7AnEcQRSaBPutMzWxU4";
 
 
 
@@ -156,7 +156,7 @@ namespace TpaoProject1.Controllers
 
             //};
             List<WellTop> welltop = new();
-            using (var reader = new StreamReader(@"Controller/randomKuyuVerisi.csv"))
+            using (var reader = new StreamReader(@"C:\Users\Büşranur\Desktop\Tpao-main 5000 last\TpaoProject1\Controllers\randomKuyuVerisi.csv"))
             {
                 //    List<string> listA = new List<string>();
                 //    List<string> listB = new List<string>();
