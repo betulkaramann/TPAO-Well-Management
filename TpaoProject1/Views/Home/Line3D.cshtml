@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,7 +16,7 @@
         function degreesToRadians(degrees) {
             return degrees * (Math.PI / 180);
         }
-        
+
         document.getElementById('excelFileInput').addEventListener('change', function (event) {
             var file = event.target.files[0];
             var reader = new FileReader();
@@ -41,61 +41,20 @@
                 var pointsX = [];
                 var pointsY = [];
                 var pointsZ = [];
-                var uArray = []; 
+                var uArray = [];
                 var vArray = [];
                 var wArray = [];
                 var previousX = 0;
                 var previousY = 0;
 
-                //var A = 1;
-                //var B = 0.8124;
-                //var C = 0.5773;
-                //North - Y - Axis = MD / 2 * [Sin(I1) * Cos(Az1) + Sin(I2) * Cos(Az2)] * RF
-               // East - X - Axes = MD / 2 * [Sin(I1) * Sin(Az1) + Sin(I2) * Sin(Az2)] * RF
-               // TVD - Z - Axes = MD / 2 * [Cos(I1) + Cos(I2)] * RF
-
-                //for (var i = 0; i < md.length; i++) {
-                //    var depth = md[i];
-                //    var azimuth1 = degrees_to_radians(azi[i]);
-                //    var inclination1 = degrees_to_radians(inc[i]);
-                //    var azimuth2 = degrees_to_radians(azi[i + 1]);
-                //    var inclination2 = degrees_to_radians(inc[i + 1]);
-                //    let beta_cal = degrees_to_radians(Math.acos(Math.cos(inclination1 - inclination2) - Math.sin(inclination1) * Math.sin(inclination2) * 1 - Math.cos(azimuth2 - azimuth1)));
-
-                //    if (beta_cal == 0) {
-                //        beta_cal = degrees_to_radians(Math.pow(10, -100));
-                //    }
-                //    var RF_cal = (2 / beta_cal) * Math.tan(beta_cal / 2);
-
-                //    var x = (depth / 2) * ((Math.sin(inclination2) * Math.cos(azimuth1)) + (Math.sin(inclination2) * Math.cos(azimuth2) * RF_cal));
-                //    var y = (depth / 2) * ((Math.sin(inclination2) * Math.sin(azimuth1)) + (Math.sin(inclination2) * Math.sin(azimuth2) * RF_cal));
-                //    var z = (depth / 2) * ((Math.cos(inclination1) * Math.cos(inclination2)) * RF_cal);
-                //    pointsX.push(x);
-                //    pointsY.push(y);
-                //    pointsZ.push(z);
-                //    // var y = depth * Math.sin(azimuth * (Math.PI / 180)); // "y" hesaplaması
-                //    //var z = tdv[i];
-
-                //    var u = 1 * Math.sin(z) + Math.sqrt(1.0 / 3) * Math.cos(y);
-                //    var v = Math.sqrt(2.0 / 3) * Math.sin(x) + 1 * Math.cos(z);
-                //    var w = Math.sqrt(1.0 / 3) * Math.sin(y) + Math.sqrt(2.0 / 3) * Math.cos(x);
-
-                //    uArray.push(u);
-                //    vArray.push(v);
-                //    wArray.push(w);
-
-
-
-                //}
-             
 
                 for (let i = 1; i < tvd.length; i++) {
                     var tempTVD = tvd[i] - tvd[i - 1];
-                    var tempMd = md[i] - md[i-1];
+                    var tempMd = md[i] - md[i - 1];
                     var alpha = (Math.acos(tempTVD / tempMd));
                     var t = tempMd * Math.sin(alpha);
-                    var y = t * Math.sin(azi[i]); // Dikkat: i-1 indeksi
-                    var x = t * Math.cos(azi[i]); // Dikkat: i-1 indeksi
+                    var y = t * Math.sin(azi[i]); 
+                    var x = t * Math.cos(azi[i]); 
 
                     pointsX.push(x + previousX);
                     pointsY.push(y + previousY);
@@ -105,15 +64,14 @@
                 }
                 console.log(pointsX);
                 console.log(pointsY);
-                
 
-                
 
-                    var data = [{
+
+                var data = [{
                     type: 'scatter3d',
                     mode: 'markers+lines',
-                    x: pointsX, //north
-                    y: pointsY, //east
+                    x: pointsX, 
+                    y: pointsY, 
                     z: tvd,
                     marker: {
                         size: 4,
@@ -131,10 +89,21 @@
 
                 var layout = {
                     scene: {
+                        aspectmode: 'manual',
                         aspectratio: {
-                            x: 2,
+                            x: 1,
                             y: 1,
-                            z: 2
+                            z: 1
+                        },
+                        xaxis: {
+                            range: [-500, 500],
+                        },
+                        yaxis: {
+                            range: [-500, 500],
+                        },
+                        zaxis: {
+                            range: [-1000, 0], 
+                            autorange: 'reversed' 
                         }
                     },
                     margin: {
