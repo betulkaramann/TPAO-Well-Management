@@ -10,9 +10,13 @@
     <input type="file" id="excelFileInput">
     <div id="readData"></div>
     <script>
-        function degrees_to_radians(degrees) {
+        function radian_to_degree(radian) {
+            return radian * (180.0 / Math.PI);
+        }
+        function degreesToRadians(degrees) {
             return degrees * (Math.PI / 180);
         }
+        
         document.getElementById('excelFileInput').addEventListener('change', function (event) {
             var file = event.target.files[0];
             var reader = new FileReader();
@@ -24,10 +28,10 @@
                 var sheet = workbook.Sheets[sheetName];
                 var rows = XLSX.utils.sheet_to_json(sheet);
 
-                var md = rows.map(row => parseFloat(row['MD[m]']));
-                var inc = rows.map(row => parseFloat(row['Inc[deg]']));
-                var azi = rows.map(row => parseFloat(row['Azi[deg]']));
-                var tvd = rows.map(row => parseFloat(row['TVD[m]']));
+                var md = rows.map(row => parseFloat(row['MD[m]'].replace(',', '.')));
+                var inc = rows.map(row => parseFloat(row['Inc[deg]'].replace(',', '.')));
+                var azi = (rows.map(row => parseFloat(row['Azi[deg]'].replace(',', '.'))));
+                var tvd = rows.map(row => parseFloat(row['TVD[m]'].replace(',', '.')));
                 var dogleg = rows.map(row => parseFloat(row['Dogleg[deg/30m]']));
                 var ss = rows.map(row => parseFloat(row['Vertical-Depth-SS[m]']));
                 var w = rows.map(row => parseFloat(row['w']));
@@ -42,9 +46,10 @@
                 var wArray = [];
                 var previousX = 0;
                 var previousY = 0;
-                var A = 1;
-                var B = 0.8124;
-                var C = 0.5773;
+
+                //var A = 1;
+                //var B = 0.8124;
+                //var C = 0.5773;
                 //North - Y - Axis = MD / 2 * [Sin(I1) * Cos(Az1) + Sin(I2) * Cos(Az2)] * RF
                // East - X - Axes = MD / 2 * [Sin(I1) * Sin(Az1) + Sin(I2) * Sin(Az2)] * RF
                // TVD - Z - Axes = MD / 2 * [Cos(I1) + Cos(I2)] * RF
@@ -86,10 +91,11 @@
 
                 for (let i = 1; i < tvd.length; i++) {
                     var tempTVD = tvd[i] - tvd[i - 1];
-                    var alpha = Math.acos(tempTVD / 30);
-                    var t = 30 * Math.sin(alpha);
-                    var x = t * Math.sin(azi[i - 1]); // Dikkat: i-1 indeksi
-                    var y = t * Math.cos(azi[i - 1]); // Dikkat: i-1 indeksi
+                    var tempMd = md[i] - md[i-1];
+                    var alpha = (Math.acos(tempTVD / tempMd));
+                    var t = tempMd * Math.sin(alpha);
+                    var y = t * Math.sin(azi[i]); // Dikkat: i-1 indeksi
+                    var x = t * Math.cos(azi[i]); // Dikkat: i-1 indeksi
 
                     pointsX.push(x + previousX);
                     pointsY.push(y + previousY);
