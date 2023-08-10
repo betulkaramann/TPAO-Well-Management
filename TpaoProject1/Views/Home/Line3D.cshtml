@@ -65,7 +65,9 @@
                 console.log(pointsX);
                 console.log(pointsY);
 
-
+                for (let i = 1; i < tvd.length; i++){
+                    tvd[i] = tvd[i]*(-1);
+                }
 
                 var data = [{
                     type: 'scatter3d',
@@ -75,13 +77,13 @@
                     z: tvd,
                     marker: {
                         size: 4,
-                        color: 'pink',
+                        color: 'green',
                         colorscale: 'Greens',
                         cmin: -20,
                         cmax: 50,
                     },
                     line: {
-                        color: 'darkblue',
+                        color: 'blue',
                         colorscale: 'Viridis',
                         width: 6
                     }
@@ -102,8 +104,8 @@
                             range: [-500, 500],
                         },
                         zaxis: {
-                            range: [-1000, 0], 
-                            autorange: 'reversed' 
+                            range: [-2000, 0], 
+                            autorange: 'false' 
                         }
                     },
                     margin: {
