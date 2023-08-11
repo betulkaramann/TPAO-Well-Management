@@ -52,9 +52,10 @@
                     var tempTVD = tvd[i] - tvd[i - 1];
                     var tempMd = md[i] - md[i - 1];
                     var alpha = (Math.acos(tempTVD / tempMd));
-                    var t = tempMd * Math.sin(alpha);
-                    var y = t * Math.sin(azi[i]); 
-                    var x = t * Math.cos(azi[i]); 
+                    //var t = tempMd * Math.sin(alpha);
+                    var t = Math.sqrt(Math.pow(tempMd, 2) - Math.pow(tempTVD, 2))
+                    var x = t * Math.sin(azi[i]-(Math.PI/2));
+                    var y = t * Math.cos(azi[i]-(Math.PI/2));
 
                     pointsX.push(x + previousX);
                     pointsY.push(y + previousY);
@@ -88,7 +89,7 @@
                         width: 6
                     }
                 }];
-
+                
                 var layout = {
                     scene: {
                         aspectmode: 'manual',
@@ -106,7 +107,8 @@
                         zaxis: {
                             range: [-2000, 0], 
                             autorange: 'false' 
-                        }
+                        },
+
                     },
                     margin: {
                         t: 20,
@@ -117,12 +119,54 @@
                     width: 900,
                     height: 600
                 };
+               
+                
+                var arrowN = {
+                    type: 'cone',
+                    x: [400],
+                    y: [100],  
+                    z: [-2000],
+                    u: [0],  
+                    v: [200],  
+                    w: [1],
+                    colorscale: [[0, 'red'], [1, 'red']],
+                    showscale: false,
+                    sizemode: 'absolute',
+                    anchor: 'tip',
+                };
+                var annotationN = {
+                    x: 400,
+                    y: 150,  
+                    z: -2000,
+                    text: 'N', 
+                    showarrow: false,
+                    font: {
+                        size: 12,
+                        color: 'red'
+                    }
+                };
+                var arrowS = {
+                    type: 'cone',
+                    x: [400],
+                    y: [-100], 
+                    z: [-2000],
+                    u: [0],    
+                    v: [-200],     
+                    w: [-1],  
+                    colorscale: [[0, 'blue'], [1, 'blue']],
+                    showscale: false,
+                    sizemode: 'absolute',
+                    anchor: 'tip',
+                };
+                data.push(arrowN);
+                layout.scene.annotations = [annotationN];
+                data.push(arrowS);
 
                 Plotly.newPlot('readData', data, layout);
             };
 
             reader.readAsArrayBuffer(file);
-        });
+        });  
     </script>
 
 </body>
