@@ -49,13 +49,14 @@
 
 
                 for (let i = 1; i < tvd.length; i++) {
+                    azi[i] = degreesToRadians(azi[i]);
                     var tempTVD = tvd[i] - tvd[i - 1];
                     var tempMd = md[i] - md[i - 1];
                     var alpha = (Math.acos(tempTVD / tempMd));
-                    //var t = tempMd * Math.sin(alpha);
+                    
                     var t = Math.sqrt(Math.pow(tempMd, 2) - Math.pow(tempTVD, 2))
-                    var x = t * Math.sin(azi[i]-(Math.PI/2));
-                    var y = t * Math.cos(azi[i]-(Math.PI/2));
+                    var y = t * Math.sin(-azi[i] + (Math.PI / 2));
+                    var x = t * Math.cos(-azi[i] + (Math.PI / 2));
 
                     pointsX.push(x + previousX);
                     pointsY.push(y + previousY);
@@ -66,15 +67,15 @@
                 console.log(pointsX);
                 console.log(pointsY);
 
-                for (let i = 1; i < tvd.length; i++){
-                    tvd[i] = tvd[i]*(-1);
+                for (let i = 1; i < tvd.length; i++) {
+                    tvd[i] = tvd[i] * (-1);
                 }
 
                 var data = [{
                     type: 'scatter3d',
                     mode: 'markers+lines',
-                    x: pointsX, 
-                    y: pointsY, 
+                    x: pointsX,
+                    y: pointsY,
                     z: tvd,
                     marker: {
                         size: 4,
@@ -89,7 +90,7 @@
                         width: 6
                     }
                 }];
-                
+
                 var layout = {
                     scene: {
                         aspectmode: 'manual',
@@ -99,14 +100,14 @@
                             z: 1
                         },
                         xaxis: {
-                            range: [-500, 500],
+                            range: [-1000, 1000],
                         },
                         yaxis: {
-                            range: [-500, 500],
+                            range: [-1000, 1000],
                         },
                         zaxis: {
-                            range: [-2000, 0], 
-                            autorange: 'false' 
+                            range: [-2000, 0],
+                            autorange: 'false'
                         },
 
                     },
@@ -119,15 +120,15 @@
                     width: 900,
                     height: 600
                 };
-               
-                
+
+
                 var arrowN = {
                     type: 'cone',
                     x: [400],
-                    y: [100],  
+                    y: [100],
                     z: [-2000],
-                    u: [0],  
-                    v: [200],  
+                    u: [0],
+                    v: [200],
                     w: [1],
                     colorscale: [[0, 'red'], [1, 'red']],
                     showscale: false,
@@ -136,9 +137,9 @@
                 };
                 var annotationN = {
                     x: 400,
-                    y: 150,  
+                    y: 150,
                     z: -2000,
-                    text: 'N', 
+                    text: 'N',
                     showarrow: false,
                     font: {
                         size: 12,
@@ -148,11 +149,11 @@
                 var arrowS = {
                     type: 'cone',
                     x: [400],
-                    y: [-100], 
+                    y: [-100],
                     z: [-2000],
-                    u: [0],    
-                    v: [-200],     
-                    w: [-1],  
+                    u: [0],
+                    v: [-200],
+                    w: [-1],
                     colorscale: [[0, 'blue'], [1, 'blue']],
                     showscale: false,
                     sizemode: 'absolute',
@@ -166,7 +167,7 @@
             };
 
             reader.readAsArrayBuffer(file);
-        });  
+        });
     </script>
 
 </body>
