@@ -29,18 +29,10 @@
                 var inc = rows.map(row => parseFloat(row['Inc[deg]'].replace(',', '.')));
                 var azi = (rows.map(row => parseFloat(row['Azi[deg]'].replace(',', '.'))));
                 var tvd = rows.map(row => parseFloat(row['TVD[m]'].replace(',', '.')));
-                var dogleg = rows.map(row => parseFloat(row['Dogleg[deg/30m]']));
-                var ss = rows.map(row => parseFloat(row['Vertical-Depth-SS[m]']));
-                var w = rows.map(row => parseFloat(row['w']));
-                var deneme1 = rows.map(row => parseFloat(row['North[m]']));
-                var deneme2 = rows.map(row => parseFloat(row['East[m]']));
 
                 var pointsX = [];
                 var pointsY = [];
                 var pointsZ = [];
-                var uArray = [];
-                var vArray = [];
-                var wArray = [];
                 var previousX = 0;
                 var previousY = 0;
 
