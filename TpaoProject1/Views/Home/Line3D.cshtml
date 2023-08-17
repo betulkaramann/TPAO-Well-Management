@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 </head>
 <body>
-    <input type="file" id="excelFileInput">
-    <div id="readData"></div>
-    <script>  
+    <div id="plot"></div>
+    <input type="file" id="excelFileInput" accept=".xls" />
+    <input type="file" id="fileInput" accept=".json" />
+
+    <script>
         function degreesToRadians(degrees) {
             return degrees * (Math.PI / 180);
         }
 
+        var scatterData;
+        var lineData;
+        const plotDiv = document.getElementById('plot');
+
+        // Excel data processing
         document.getElementById('excelFileInput').addEventListener('change', function (event) {
             var file = event.target.files[0];
             var reader = new FileReader();
@@ -24,7 +29,6 @@
                 var sheetName = workbook.SheetNames[0];
                 var sheet = workbook.Sheets[sheetName];
                 var rows = XLSX.utils.sheet_to_json(sheet);
-
                 var md = rows.map(row => parseFloat(row['MD[m]'].replace(',', '.')));
                 var inc = rows.map(row => parseFloat(row['Inc[deg]'].replace(',', '.')));
                 var azi = (rows.map(row => parseFloat(row['Azi[deg]'].replace(',', '.'))));
@@ -33,16 +37,15 @@
                 var pointsX = [];
                 var pointsY = [];
                 var pointsZ = [];
-                var previousX = 0;
-                var previousY = 0;
-
+                var previousX = 655000;
+                var previousY = 3895000;
 
                 for (let i = 1; i < tvd.length; i++) {
                     azi[i] = degreesToRadians(azi[i]);
                     var tempTVD = tvd[i] - tvd[i - 1];
                     var tempMd = md[i] - md[i - 1];
                     var alpha = (Math.acos(tempTVD / tempMd));
-                    
+
                     var t = Math.sqrt(Math.pow(tempMd, 2) - Math.pow(tempTVD, 2))
                     var y = t * Math.sin(-azi[i] + (Math.PI / 2));
                     var x = t * Math.cos(-azi[i] + (Math.PI / 2));
@@ -58,7 +61,8 @@
                     tvd[i] = tvd[i] * (-1);
                 }
 
-                var data = [{
+                // Creating the surface trace
+                scatterData = {
                     type: 'scatter3d',
                     mode: 'markers+lines',
                     x: pointsX,
@@ -76,9 +80,76 @@
                         colorscale: 'Viridis',
                         width: 6
                     }
-                }];
+                };
 
-                var layout = {
+                updatePlotly();
+            };
+
+            reader.readAsArrayBuffer(file);
+        });
+
+        // JSON data processing
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                var jsonData = JSON.parse(event.target.result);
+
+                const numRows = jsonData.bins[1]; 
+                const numCols = jsonData.bins[0]; 
+                const extent = jsonData.extent;
+                const increment = jsonData.increment;
+
+
+                const xValues = [];
+                const yValues = [];
+                const zValues = [];
+
+                for (let i = 0; i < numCols; i++) {
+                    xValues.push(642855 + 85 * i);
+                }
+                for (let i = 0; i < numRows; i++) {
+                    yValues.push(3886795 + 85 * i);
+                }
+
+                for (let i = 0; i < numRows; i++) {
+                    const row = [];
+                    for (let j = 0; j < numCols; j++) {
+                        const index = i * numCols + j;
+                        var deneme = jsonData.points[index];
+                        if (deneme != null) deneme = deneme * (-1);
+                        if (deneme == null) {
+                            row.push(NaN);
+                        }
+                        else {
+                            row.push(deneme);
+
+                        }
+
+                    }
+                    zValues.push(row);
+                }
+
+
+                lineData = {
+                    type: 'surface',
+                    x: xValues,
+                    y: yValues,
+                    z: zValues,
+                    colorscale: 'YlGnBu'
+                };
+
+                updatePlotly();
+            };
+
+            reader.readAsText(file);
+        });
+
+
+        function updatePlotly() {
+            if (scatterData && lineData) {
+                var scatterLayout = {
                     scene: {
                         aspectmode: 'manual',
                         aspectratio: {
@@ -87,13 +158,13 @@
                             z: 1
                         },
                         xaxis: {
-                            range: [-1000, 1000],
+                            range: [642855, 661725],
                         },
                         yaxis: {
-                            range: [-1000, 1000],
+                            range: [3886795, 3905835],
                         },
                         zaxis: {
-                            range: [-2000, 0],
+                            range: [-3000, 0],
                             autorange: 'false'
                         },
 
@@ -133,29 +204,24 @@
                         color: 'red'
                     }
                 };
-                var arrowS = {
-                    type: 'cone',
-                    x: [400],
-                    y: [-100],
-                    z: [-2000],
-                    u: [0],
-                    v: [-200],
-                    w: [-1],
-                    colorscale: [[0, 'blue'], [1, 'blue']],
-                    showscale: false,
-                    sizemode: 'absolute',
-                    anchor: 'tip',
+
+                var lineLayout = {
+                    title: 'Douleb',
+                    scene: {
+                        xaxis: { title: 'X Axis', },
+                        yaxis: { title: 'Y Axis', },
+                        zaxis: { title: 'Z Axis', },
+                        aspectmode: 'manuel',
+                        aspectratio: { x: 1, y: 1, z: 0.25 }
+
+                    }
                 };
-                data.push(arrowN);
-                layout.scene.annotations = [annotationN];
-                data.push(arrowS);
 
-                Plotly.newPlot('readData', data, layout);
-            };
+                Plotly.newPlot('plot', [scatterData, lineData], scatterLayout);
+                
+            }
+        }
 
-            reader.readAsArrayBuffer(file);
-        });
     </script>
-
 </body>
 </html>
