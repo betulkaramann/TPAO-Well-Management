@@ -8,8 +8,10 @@
     <div id="plot"></div>
     <input type="file" id="excelFileInput" accept=".xls" />
     <input type="file" id="fileInput" accept=".json" multiple />
+    <input type="file" id="jsonFileInput">
     <button id="processButton">Dosyaları İşle</button>
-
+    <div id="plot" style="width: 900px; height: 900px;"></div>
+    
     <script>
         function degreesToRadians(degrees) {
             return degrees * (Math.PI / 180);
@@ -19,6 +21,72 @@
         var surfaceData;
         var flag;
         const plotDiv = document.getElementById('plot');
+
+        document.getElementById('jsonFileInput').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var jsonData = JSON.parse(e.target.result);
+
+                // JSON verilerini kullanma
+                var wellName = jsonData.wellName;
+                var depthUnit = jsonData.depthUnit;
+                var wellHeadPos = jsonData.wellHeadPos;
+                var pathHeader = jsonData.pathHeader;
+                var path = jsonData.path;
+
+                var iter = path.length;
+
+                var dX = [];
+                var dY = [];
+                var TVD = [];
+
+                var pointsX = [];
+                var pointsY = [];
+
+                var previousX = wellHeadPos[0];
+                var previousY = wellHeadPos[1];
+
+                for (let i = 0; i < iter; i++) {
+                    dX.push(path[i][0]);
+                    dY.push(path[i][1]);
+                    TVD.push(path[i][2]);
+                }
+
+                for (let i = 0; i < iter; i++) {
+                    pointsX.push(dX[i] + previousX);
+                    pointsY.push(dY[i] + previousY);
+                    previousX = pointsX[pointsX.length - 1];
+                    previousY = pointsY[pointsY.length - 1];
+                }
+
+                for (let i = 1; i < TVD.length; i++) {
+                    TVD[i] = TVD[i] * (-1);
+                }
+
+                scatterData2 = {
+                    type: 'scatter3d',
+                    mode: 'lines+markers',
+                    x: pointsX,
+                    y: pointsY,
+                    z: TVD,
+                    line: {
+                        width: 6,
+                        colorscale: "Viridis"
+                    },
+                    marker: {
+                        size: 3.5,
+                        colorscale: "Greens",
+                        cmin: -20,
+                        cmax: 50
+                    }
+                };
+                updatePlotly();
+            };
+            reader.readAsText(file);
+        });
+
 
         // Excel data processing
         document.getElementById('excelFileInput').addEventListener('change', function (event) {
@@ -164,7 +232,7 @@
         
 
         function updatePlotly() {
-            if(scatterData && values.length == flag){
+            if (scatterData && scatterData2 && values.length == flag) {
                 var scatterLayout = {
                     scene: {
                         aspectmode: 'manual',
@@ -174,14 +242,13 @@
                             z: 1
                         },
                         xaxis: {
-                            range: [642855, 661725],
+                            autorange: 'true'
                         },
                         yaxis: {
-                            range: [3886795, 3905835],
+                            autorange: 'true'
                         },
                         zaxis: {
-                            range: [-3000, 0],
-                            autorange: 'false'
+                            autorange: 'true'
                         },
 
                     },
@@ -239,15 +306,20 @@
                         x: surfaceData.x,
                         y: surfaceData.y,
                         z: surfaceData.z,
-                        colorscale: 'YlGnBu'
+                        colorscale: 'YlGnBu',
+                        colorbar: {
+                            tickvals: [-20, 50], // Renk skalası çubuğunun üzerinde görünecek değerler
+                            ticktext: ['-20', '50'],
+                            title: 'TVD',
+                            titleside: 'right'
+                        }
                     };
                 });
                
-                Plotly.newPlot('plot', [scatterData, ...surfaceTraces], scatterLayout);
+                Plotly.newPlot('plot', [scatterData, scatterData2, ...surfaceTraces], scatterLayout);
                 
           }  
         }
-
 
     </script>
 </body>
