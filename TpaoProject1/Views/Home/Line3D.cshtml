@@ -7,7 +7,8 @@
 <body>
     <div id="plot"></div>
     <input type="file" id="excelFileInput" accept=".xls" />
-    <input type="file" id="fileInput" accept=".json" />
+    <input type="file" id="fileInput" accept=".json" multiple />
+    <button id="processButton">Dosyaları İşle</button>
 
     <script>
         function degreesToRadians(degrees) {
@@ -15,7 +16,8 @@
         }
 
         var scatterData;
-        var lineData;
+        var surfaceData;
+        var flag;
         const plotDiv = document.getElementById('plot');
 
         // Excel data processing
@@ -87,68 +89,82 @@
 
             reader.readAsArrayBuffer(file);
         });
+        var count = 0;
+        var selectedFiles = 0;
+        document.getElementById('processButton').addEventListener('click', function () {
+            var fileInput = document.getElementById('fileInput');
+            var selectedFiles = fileInput.files;
+            flag= selectedFiles.length;
+            for(var i = 0; i < selectedFiles.length; i++){
+                var file = selectedFiles[i];
+                readSurfaceJson(file);
+                count++;
+                
 
+            }
+            
+        });
+
+        var values = [];
+        function readSurfaceJson(file){
         // JSON data processing
-        document.getElementById('fileInput').addEventListener('change', function (event) {
-            var file = event.target.files[0];
             var reader = new FileReader();
 
             reader.onload = function (event) {
+                
                 var jsonData = JSON.parse(event.target.result);
 
                 const numRows = jsonData.bins[1]; 
                 const numCols = jsonData.bins[0]; 
                 const extent = jsonData.extent;
+                const extentX = jsonData.extent[0][0];
+                const extentY = jsonData.extent[0][1];
                 const increment = jsonData.increment;
-
-
+                const incrementX = jsonData.increment[0];
+                const incrementY = jsonData.increment[1];
+                
                 const xValues = [];
                 const yValues = [];
                 const zValues = [];
 
                 for (let i = 0; i < numCols; i++) {
-                    xValues.push(642855 + 85 * i);
+                    xValues.push(extentX + incrementX * i);
                 }
                 for (let i = 0; i < numRows; i++) {
-                    yValues.push(3886795 + 85 * i);
+                    yValues.push(extentY + incrementY * i);
                 }
 
                 for (let i = 0; i < numRows; i++) {
                     const row = [];
                     for (let j = 0; j < numCols; j++) {
                         const index = i * numCols + j;
-                        var deneme = jsonData.points[index];
-                        if (deneme != null) deneme = deneme * (-1);
-                        if (deneme == null) {
+                        var elements = jsonData.points[index];
+                        if (elements != null) elements = elements * (-1);
+                        if (elements == null) {
                             row.push(NaN);
                         }
                         else {
-                            row.push(deneme);
+                            row.push(elements);
 
                         }
 
                     }
                     zValues.push(row);
                 }
-
-
-                lineData = {
-                    type: 'surface',
+                values.push({
                     x: xValues,
                     y: yValues,
-                    z: zValues,
-                    colorscale: 'YlGnBu'
-                };
-
-                updatePlotly();
+                    z: zValues
+                });
             };
-
+            if (count == flag)
+                updatePlotly();
             reader.readAsText(file);
-        });
-
+        }
+        
 
         function updatePlotly() {
-            if (scatterData && lineData) {
+            if(scatterData && values.length == flag){
                 var scatterLayout = {
                     scene: {
                         aspectmode: 'manual',
@@ -216,11 +232,22 @@
 
                     }
                 };
-
-                Plotly.newPlot('plot', [scatterData, lineData], scatterLayout);
                 
-            }
+                var surfaceTraces = values.map(function (surfaceData) {
+                    return {
+                        type: 'surface',
+                        x: surfaceData.x,
+                        y: surfaceData.y,
+                        z: surfaceData.z,
+                        colorscale: 'YlGnBu'
+                    };
+                });
+               
+                Plotly.newPlot('plot', [scatterData, ...surfaceTraces], scatterLayout);
+                
+          }  
         }
+
 
     </script>
 </body>
