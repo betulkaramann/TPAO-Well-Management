@@ -21,3 +21,17 @@ TpaoProject1/appsettings.json
 *.cache
 *.json
 *.txt
+/TpaoProject1/obj/Debug/net6.0/TpaoProject1.assets.cache
+/TpaoProject1/obj/Debug/net6.0/TpaoProject1.GeneratedMSBuildEditorConfig.editorconfig
+/TpaoProject1/obj/Debug/net6.0/TpaoProject1.csproj.AssemblyReference.cache
+/TpaoProject1/obj/project.assets.json
+/TpaoProject1/obj/project.nuget.cache
+/TpaoProject1/obj/TpaoProject1.csproj.nuget.dgspec.json
+/TpaoProject1/obj/TpaoProject1.csproj.nuget.g.props
+*.cs
+*.editorconfig
+*.props
+*.targets
+*.wsuo
+*.lock
+/TestPart/bin/Debug/net6.0/CoverletSourceRootsMapping
