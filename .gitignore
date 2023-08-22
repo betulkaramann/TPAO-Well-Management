@@ -36,3 +36,14 @@ TpaoProject1/appsettings.json
 *.lock
 /TestPart/bin/Debug/net6.0/CoverletSourceRootsMapping
 /TpaoProject1/obj/Debug/net6.0/project.razor.vs.json
+/TpaoProject1/obj/Debug/net6.0/TpaoProject1.genruntimeconfig.cache
+/TpaoProject1/obj/Debug/net6.0/apphost.exe
+/GeoSimplifier/bin/Debug/net6.0
+*.exe
+*.pdb
+/TpaoProject1/obj/Debug/net6.0/TpaoProject1.csproj.CoreCompileInputs.cache
+/TpaoProject1/obj/Debug/net6.0/staticwebassets.pack.json
+/TpaoProject1/obj/Debug/net6.0/staticwebassets.development.json
+/TpaoProject1/obj/Debug/net6.0/staticwebassets.build.json
+*.CopyComplete
+/TpaoProject1/obj/Debug/net6.0/TpaoProject1.csproj.FileListAbsolute.txt
