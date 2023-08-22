@@ -2,152 +2,134 @@
 
 @model WellTop;
 @{
-	ViewBag.Title = "AddWellTops";
+    ViewBag.Title = "AddWellTops";
 }
-
 <section class="background-radial-gradient overflow-hidden">
-	<style>
-		.background-radial-gradient {
-			background-color: hsl(119, 25%, 28%);
-			background-image: radial-gradient(650px circle at 0% 0%, hsl(57, 42%, 73%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(0, 74%, 61%) 80%, transparent 100%), radial-gradient(1250px circle at 100% 100%, hsl(262, 61%, 26%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%);
-		}
+    <style>
+        .background-radial-gradient {
+            background-color: hsl(119, 25%, 28%);
+            background-image: radial-gradient(650px circle at 0% 0%, hsl(57, 42%, 73%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(0, 74%, 61%) 80%, transparent 100%), radial-gradient(1250px circle at 100% 100%, hsl(262, 61%, 26%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%);
+        }
 
-		#radius-shape-1 {
-			height: 220px;
-			width: 220px;
-			top: -60px;
-			left: -130px;
-			background: radial-gradient(#44006b, #FF0000);
-			overflow: hidden;
-		}
+        #radius-shape-1 {
+            height: 220px;
+            width: 220px;
+            top: -60px;
+            left: -130px;
+            background: radial-gradient(#44006b, #FF0000);
+            overflow: hidden;
+        }
 
-		#radius-shape-2 {
-			border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
-			bottom: -60px;
-			right: -110px;
-			width: 300px;
-			height: 300px;
-			background: radial-gradient(#44006b, #FF0000);
-			overflow: hidden;
-		}
+        #radius-shape-2 {
+            border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+            bottom: -60px;
+            right: -110px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(#44006b, #FF0000);
+            overflow: hidden;
+        }
 
-		.bg-glass {
-			background-color: hsla(0, 0%, 100%, 0.9) !important;
-			backdrop-filter: saturate(200%) blur(25px);
-		}
-	</style>
+        .bg-glass {
+            background-color: hsla(0, 0%, 100%, 0.9) !important;
+            backdrop-filter: saturate(200%) blur(25px);
+        }
+    </style>
 
-	<div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
-		<div class="row gx-lg-5 align-items-center mb-5">
-			<div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-				<h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(119, 0%, 95%)">
-					1954'ten beri <br />
-					<span style="color: hsl(218, 81%, 75%)">Hizmetinizdeyiz</span>
-				</h1>
+    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+        <div class="row gx-lg-5 align-items-center mb-5">
+            <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+                <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(119, 0%, 95%)">
+                    1954'ten beri <br />
+                    <span style="color: hsl(218, 81%, 75%)">Hizmetinizdeyiz</span>
+                </h1>
 
-			</div>
+            </div>
 
-			<div class="col-lg-6 mb-5 mb-lg-0 position-relative">
-				<div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
-				<div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+            <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+                <div class="card bg-glass">
+                    <div class="card-body px-4 py-5 px-md-5">
+                        <form method="post" asp-action="AddWellTop" asp-controller="ViewWelltops">
+                            <div class="form-outline mb-4">
+                                <label asp-for="Name">Kuyu Adı</label>
+                                <input asp-for="Name" class="form-control" name="Name" aria-required="true" placeholder="Kuyu Adı" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <div class="warning-message">
+                                    <style>
+                                        #warning-message {
+                                            color: #333;
+                                            padding: 10px;
+                                        }
 
-				<div class="card bg-glass">
-					<div class="card-body px-4 py-5 px-md-5">
-						<form method="post" asp-action="AddWellTop" asp-controller="ViewWelltops">
-							<div class="form-outline mb-4">
-								<label asp-for="Name">Kuyu Adı</label>
-								<input asp-for="Name" class="form-control" name="Name" aria-required="true" placeholder="Kuyu Adı" />
-								<span asp-validation-for="Name" class="text-danger"></span>
-								<div class="warning-message">
-									<style>
-										#warning-message {
-											color: #333;
-											padding: 10px;
-										}
+                                        .warning-message strong {
+                                            font-size: 12px;
+                                        }
+                                    </style>
+                                    <strong font-size: 10px>*Lütfen RAMAN-56 veya GUZEL AGAC-43 şeklinde giriniz!</strong>
+                                </div>
+                            </div>
+                            <div class="from-group col mb-4">
+                                <div class="form-outline">
+                                    <label asp-for="Latitude">Enlem</label>
+                                    <input asp-for="Latitude" class="form-control" name="Latitude" aria-required="true" placeholder="Örn:39.487512" />
+                                </div>
+                                <span asp-validation-for="Latitude" class="text-danger"></span>
+                                <div class="warning-message">
+                                    <style>
+                                        #warning-message {
+                                            color: #333;
+                                            padding: 10px;
+                                        }
 
-										.warning-message strong {
-											font-size: 12px;
-										}
-									</style>
-									<strong font-size: 10px>*Lütfen RAMAN-56 veya GUZEL AGAC-43 şeklinde giriniz!</strong>
-								</div>
-							</div>
+                                        .warning-message strong {
+                                            font-size: 12px;
+                                        }
+                                    </style>
+                                    <strong font-size: 10px>*Lütfen noktadan sonra altı basamak olacak şekilde, 36-42 arasında bir değer giriniz!</strong>
+                                </div>
+                            </div>
+                            <div class="from-group col mb-4">
+                                <div class="form-outline">
+                                    <label asp-for="Longitude">Boylam</label>
+                                    <input asp-for="Longitude" class="form-control" name="Longitude" aria-required="true" placeholder="Örn:39.487512" />
+                                </div>
+                                <span asp-validation-for="Longitude" class="text-danger"></span>
+                                <div class="warning-message">
+                                    <style>
+                                        #warning-message {
+                                            color: #333;
+                                            padding: 10px;
+                                        }
 
+                                        .warning-message strong {
+                                            font-size: 12px;
+                                        }
+                                    </style>
+                                    <strong font-size: 10px>*Lütfen noktadan sonra altı basamak olacak şekilde, 26-45 arasında bir değer giriniz!</strong>
+                                </div>
 
-							@*<div class="row">*@
-							<div class="from-group col mb-4">
-								<div class="form-outline">
-									<label asp-for="Latitude">Enlem</label>
-									<input asp-for="Latitude" class="form-control" name="Latitude" aria-required="true" placeholder="Örn:39.487512" />
-								</div>
-								<span asp-validation-for="Latitude" class="text-danger"></span>
-								<div class="warning-message">
-									<style>
-										#warning-message {
-											color: #333;
-											padding: 10px;
-										}
-
-										.warning-message strong {
-											font-size: 12px;
-										}
-									</style>
-									<strong font-size: 10px>*Lütfen noktadan sonra altı basamak olacak şekilde, 36-42 arasında bir değer giriniz!</strong>
-								</div>
-							</div>
-							<div class="from-group col mb-4">
-								<div class="form-outline">
-									<label asp-for="Longitude">Boylam</label>
-									<input asp-for="Longitude" class="form-control" name="Longitude" aria-required="true" placeholder="Örn:39.487512" />
-								</div>
-								<span asp-validation-for="Longitude" class="text-danger"></span>
-								<div class="warning-message">
-									<style>
-										#warning-message {
-											color: #333;
-											padding: 10px;
-										}
-
-										.warning-message strong {
-											font-size: 12px;
-										}
-									</style>
-									<strong font-size: 10px>*Lütfen noktadan sonra altı basamak olacak şekilde, 26-45 arasında bir değer giriniz!</strong>
-								</div>
-
-							</div>
-							@*</div>*@
-							<div class="form-group col-md-4">
-								<label for="inputState" required>Kuyu Tipi</label>
-								<select asp-for="WellTopType" class="form-control" name="WellTopType" aria-required="true" placeholder="Kuyu Tipi" />
-								<span asp-validation-for="WellTopType" class="text-danger"></span>
-								<option value="default"selected disabled hidden>Seçiniz</option>
-								<option value="arama">Arama</option>
-								<option value="üretim">Üretim</option>
-								<option value="tespit">Tespit</option>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputState" required>Kuyu Tipi</label>
+                                <select asp-for="WellTopType" class="form-control" name="WellTopType" aria-required="true" placeholder="Kuyu Tipi" />
+                                <span asp-validation-for="WellTopType" class="text-danger"></span>
+                                <option value="default" selected disabled hidden>Seçiniz</option>
+                                <option value="arama">Arama</option>
+                                <option value="üretim">Üretim</option>
+                                <option value="tespit">Tespit</option>
                                 </select>
-								
-
-							</div>
-							<br />
-
-
-
-							@*<button onclick="redirectToPage('@Url.Action("Delete","ViewWelltops")')" type="submit" class="btn btn-primary btn-block mb-4">
-								Delete
-							</button>*@
-
-							@*<button type="submit" class="btn btn-primary btn-block mb-4" asp-action=" @ViewBag.ActionName" asp-controller="ViewWelltops">
-								@ViewBag.ButtonText
-							</button>*@
-							<button type="submit" class="btn btn-primary btn-block mb-4" asp-action="@ViewBag.ActionName" asp-controller="ViewWelltops">
-								@ViewBag.ButtonText
-							</button>
-
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                            </div>
+                            <br />
+                            @*burada partial view yapısına uygun olarak buton adını ve tıklandığında yönlenmesi gerek action yönetimi yapılıyor*@
+                            <button type="submit" class="btn btn-primary btn-block mb-4" asp-action="@ViewBag.ActionName" asp-controller="ViewWelltops">
+                                @ViewBag.ButtonText
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
