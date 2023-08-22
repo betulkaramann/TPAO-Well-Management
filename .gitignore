@@ -35,3 +35,4 @@ TpaoProject1/appsettings.json
 *.wsuo
 *.lock
 /TestPart/bin/Debug/net6.0/CoverletSourceRootsMapping
+/TpaoProject1/obj/Debug/net6.0/project.razor.vs.json
