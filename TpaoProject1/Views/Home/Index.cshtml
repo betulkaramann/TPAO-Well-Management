@@ -25,9 +25,10 @@
 
 	<script type="application/ld+json">
 		{
+			"name": ""
+		}
 
-				"name": ""
-		}</script>
+	</script>
 	<meta name="theme-color" content="#478ac9">
 	<meta property="og:title" content="Index">
 	<meta property="og:type" content="website">
@@ -270,7 +271,7 @@
 
 	}
 
-	/*begin-variables font-family*/
+
 	.u-body {
 		font-family: 'Open Sans',sans-serif;
 	}
@@ -283,8 +284,7 @@
 	h6 {
 		font-family: Roboto,sans-serif;
 	}
-	/*end-variables font-family*/
-	/*begin-variables color*/
+
 	.u-overlap.u-overlap-transparent .u-header,
 	.u-image,
 	.u-gradient {
@@ -301,8 +301,7 @@
 		background-color: #ffffff;
 		--effect-scale: 1.1;
 	}
-	/*end-variables color*/
-	/*begin-variables font*/
+
 	.u-custom-font.u-text-font {
 		font-family: 'Open Sans',sans-serif !important;
 	}
@@ -310,41 +309,7 @@
 	.u-custom-font.u-heading-font {
 		font-family: Roboto,sans-serif !important;
 	}
-	/*end-variables font*/
-	/*begin-variables colors*/
 
-	/*yellow-circle*/
-	/*
-					.u-palette-3-light-3,
-						.u-body.u-palette-3-light-3,
-						section.u-palette-3-light-3:before,
-						.u-palette-3-light-3 > .u-audio-main-layout-wrapper:before,
-						.u-palette-3-light-3 > .u-container-layout:before,
-						.u-palette-3-light-3 > .u-inner-container-layout:before,
-						.u-palette-3-light-3.u-sidenav:before,
-						.u-container-layout.u-container-layout.u-palette-3-light-3:before,
-						.u-table-alt-palette-3-light-3 tr:nth-child(even) {
-							color: #111111;
-							background-color: #fef9e6;
-						}
-
-						.u-input.u-palette-3-light-3,
-						.u-field-input.u-palette-3-light-3,
-						.u-button-style.u-palette-3-light-3,
-						.u-button-style.u-palette-3-light-3[class*="u-border-"] {
-							color: #111111 !important;
-							background-color: #fef9e6 !important;
-						}
-
-						*/
-
-	/**/
-
-	/*text*/
-
-	/**/
-
-	/*background*/
 	.u-palette-5-light-2,
 	.u-body.u-palette-5-light-2,
 	section.u-palette-5-light-2:before,
@@ -357,9 +322,7 @@
 		color: #111111;
 		background-color: #e0e5eb;
 	}
-	/**/
 
-	/*yellow circle-border*/
 	.u-border-palette-3-light-3,
 	.u-border-palette-3-light-3.u-input,
 	.u-border-palette-3-light-3.u-field-input.u-field-input,
@@ -367,13 +330,7 @@
 		border-color: #e0e5eb;
 		stroke: #fef9e6;
 	}
-	/**/
 
-
-
-
-
-	/*circle*/
 	.u-text-palette-1-base,
 	.u-input.u-text-palette-1-base,
 	.u-input.u-text-palette-1-base[class*="u-border-"],
@@ -383,22 +340,10 @@
 	a.u-button-style.u-text-palette-1-base[class*="u-border-"] {
 		color: #478ac9 !important;
 	}
-	/**/
-
-
-
-
-
-	/*end-variables colors*/
-
-	/*begin-variables sitestylecss*/
-
-
 
 	.u-body {
 	}
 
-	/** common-rules **/
 	h1.u-title {
 		font-weight: 400;
 		font-size: 6rem;
@@ -533,10 +478,7 @@
 		border-width: 1px;
 		borders: top right bottom left;
 	}
-	/** common-rules **/
 
-	/** publish-rules **/
-	/*begin-media rules*/
 	.media (max-width: 1199px) {
 		h1 .u-title
 
@@ -698,13 +640,7 @@
 	}
 
 	}
-	/*end-media rules*/
-	/** publish-rules **/
 
-
-
-	/** cms-rules **/
-	/*begin-responsive rules*/
 	.u-lg h1.u-title {
 		font-size: 4.5rem;
 	}
@@ -808,9 +744,6 @@
 	.u-xs .u-post-content {
 		font-size: 1rem;
 	}
-	/*end-responsive rules*/
-	/** cms-rules **/
-
 
 	body, html {
 		height: 100%;
@@ -837,19 +770,12 @@
 	}
 
 	text {
-		text-align: center; /* Metin paragrafını yatayda merkezler */
+		text-align: center;
 	}
 
-
-
-
-
-	/*begin-variables base-font-size*/
 	html {
 		font-size: 16px;
 	}
-	/*end-variables base-font-size*/
-	
 </style>
 
 <div class="row">
@@ -857,14 +783,10 @@
 		<a href="/" title="Türkiye Petrolleri Anonim Ortaklığı">
 			@if (!User.Identity.IsAuthenticated)
 			{
-
 				<img src="https://trthaberstatic.cdn.wp.trt.com.tr/resimler/1900000/dogalgaz-sondaj-gemisi-aa-1900011.jpg" class="image-fatih" title="Türkiye Petrolleri Anonim Ortaklığı" alt="Türkiye Petrolleri Anonim Ortaklığı">
-
 			}
 			else
 			{
-
-
 				<body data-home-page="Index.html" data-home-page-title="Index" class="" data-lang="tr">
 					<section class="u-clearfix u-palette-5-light-2 u-section-1" id="carousel_5ffd">
 						<div class="">
@@ -988,7 +910,7 @@ s80-35.8,80-80S124.2,0,80,0L80,0z"></path>
 
 			data: [@ViewBag.arama, @ViewBag.uretim, @ViewBag.tespit],
 			backgroundColor: ['#E9EE80', '#EC9C6F', '#F35F5C'],
-			borderWidth: 1, // Dilim sınır kalınlığı
+			borderWidth: 1,
 		}]
 	};
 

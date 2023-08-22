@@ -1,6 +1,5 @@
 ﻿@using Newtonsoft.Json;
 @using TpaoProject1.Model;
-
 @using Microsoft.AspNetCore.Identity
 @using TpaoProject1.Areas.Identity.Data;
 @model TpaoProject1.Model.JsonDataModel;
@@ -24,107 +23,18 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-    
+
     <style>
 
         :root {
             --primary: #17C969;
             --brand-gradient: linear-gradient(107.65deg,#17C969 17.53%,#005DBB 94.64%);
-            --brand-gradient-reverse: linear-gradient(107.65deg,#005DBB 17.53%,#17C969 94.64%);
-            --brand-gradient-erasebg: linear-gradient(120.55deg,#FF4040 18.56%,#A20BD8 98.01%);
-            --brand-gradient-erasebg-reverse: linear-gradient(120.55deg,#A20BD8 18.56%,#FF4040 98.01%);
-            --brand-gradient-watermark: linear-gradient(132.2deg,#F9D423 7.64%,#FF4E50 97.11%);
-            --brand-gradient-watermark-reverse: linear-gradient(132.2deg,#FF4E50 7.64%,#F9D423 97.11%);
-            --brand-gradient-shrink: linear-gradient(90.36deg,#AD00FF 0.31%,#330371 104.9%);
-            --brand-gradient-shrink-reverse: linear-gradient(120.55deg,#330371 18.56%,#AD00FF 98.01%);
-            --brand-gradient-convert: linear-gradient(92.99deg,#0148BA 1.35%,#01A5FF 104.47%);
-            --brand-gradient-convert-reverse: linear-gradient(92.99deg,#01A5FF 1.35%,#0148BA 104.47%);
-            --button-gradient: linear-gradient(107.65deg,#17C969 17.53%,#005DBB 94.64%);
-            --border-gradient: var(--button-gradient);
-            --heading-font: Inter,sans-serif;
-            --heading-font-weight: 700;
-            --subheading-font-weight: 700;
-            --bold-font-weight: 600;
             --body-font: Inter,sans-serif;
             --bg-color: #101112;
             --secondary-bg-color: rgba(255,255,255,0.02);
-            --bg-color-80: rgba(16,17,18,0.8);
-            --error: #C13C3C;
-            --border-color: #323232;
-            --secondary-bg: #005DBB;
-            --secondary-border-color: #17C969;
-            --button-border: #005DBB;
-            --button-border-erasebg: #A50CD4;
-            --secondary-button-border: #323232;
-            --border-radius-20: 20px;
-            --border-radius-16: 16px;
             --border-radius-10: 10px;
-            --border-radius-12: 12px;
-            --border-radius-8: 8px;
-            --letter-spacing: normal;
-            --white-100: rgba(255,255,255,1);
-            --white-90: rgba(255,255,255,0.9);
-            --white-80: rgba(255,255,255,0.8);
-            --white-70: rgba(255,255,255,0.7);
-            --white-12: rgba(255,255,255,0.12);
-            --white-4: rgba(255,255,255,0.04);
-            --banner-title-max-width: 1039px;
-            --banner-description-max-width: 795px;
-            --section-description-max-width: 795px;
             --content-max-width: 450px;
-            --gray-200: #C6CFE2;
-            --grey-300: #AAABC5;
-            --grey-400: #49494F;
-            --grey-500: #303233;
-            --grey-600: #242525;
-            --grey-700: #1A1B1B;
-            --grey-800: #1D202A;
-            --grey-900: #171921;
-            --grey-1000: #151617;
             --black: #101112;
-            --h1-d: 48px;
-            --h1-m: 28px;
-            --h2-d: 40px;
-            --h2-m: 24px;
-            --h3-d: 34px;
-            --h3-m: 20px;
-            --subtitle-1-d: 24px;
-            --subtitle-1-m: 18px;
-            --subtitle-2-d: 20px;
-            --subtitle-2-m: 16px;
-            --body-1-d: 18px;
-            --body-1-m: 16px;
-            --body-2-d: 16px;
-            --body-2-m: 14px;
-            --body-3-d: 14px;
-            --body-3-m: 12px;
-            --body-4-d: 12px;
-            --body-4-m: 10px;
-            --caption-1-d: 14px;
-            --letter-spacing-1: 1.2px;
-            --letter-spacing-2: 1px;
-            --letter-spacing-3: 0.6px;
-            --letter-spacing-4: 0.5px;
-            --line-height-62: 62px;
-            --line-height-58: 58px;
-            --line-height-56: 56px;
-            --line-height-49: 49px;
-            --line-height-40: 40px;
-            --line-height-36: 36px;
-            --line-height-34: 34px;
-            --line-height-32: 32px;
-            --line-height-28: 28px;
-            --line-height-12: 22px;
-            --line-height-16: 16px;
-            --line-height-18: 18px;
-            --line-height-22: 22px;
-            --line-height-20: 20px;
-            --line-height-120: 120%;
-            --line-height-150: 150%;
-            --tooltip-text-color: rgba(255,255,255,0.8);
-            --tooltip-background-color: #49494F;
-            --tooltip-margin: 20px;
-            --tooltip-arrow-size: 6px;
         }
 
         .fIGwjR {
@@ -266,11 +176,6 @@
             text-align: center;
         }
 
-        .fIGwjR {
-            max-width: 1200px;
-            padding: 0px 20px;
-            margin: 0px auto;
-        }
 
         .grid {
             margin-top: 20px;
@@ -346,7 +251,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-                            
+
                             Swal.fire({
                                 title: 'Başarılı!',
                                 text: 'Dosya başarıyla yüklendi!',
@@ -354,7 +259,7 @@
                                 confirmButtonText: 'Tamam'
                             });
                             window.location.href = "/Home/ViewMap";
-                            
+
                         },
                         error: function (error) {
                             Swal.fire({

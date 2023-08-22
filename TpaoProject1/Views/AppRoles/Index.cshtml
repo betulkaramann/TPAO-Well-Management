@@ -1,12 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@model IEnumerable<IdentityRole> 
+@model IEnumerable<IdentityRole>
 
-    @{
-        ViewData["Title"] = "Application Roles";
-    }
-    <p>
-        <a asp-action="Create">Create Role</a>
-    </p>
+@{
+    ViewData["Title"] = "Application Roles";
+}
+<p>
+    <a asp-action="Create">Create Role</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -22,7 +22,7 @@
                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
             </tr>
         }
-      
-        
+
+
     </tbody>
 </table>

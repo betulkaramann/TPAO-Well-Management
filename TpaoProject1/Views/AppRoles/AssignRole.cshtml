@@ -185,7 +185,7 @@
 				<th>Soyad</th>
 				<th>Email</th>
 				<th>Rol</th>
-				
+
 
 				<th></th>
 			</tr>
@@ -199,7 +199,7 @@
 					<td>@item.FirstName</td>
 					<td>@item.LastName</td>
 					<td>@item.Email</td>
-					
+
 
 					<td>
 
@@ -211,20 +211,20 @@
 								}
 							</button>
 
-							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink" >
-								@foreach(var a in Model.Roller)
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+								@foreach (var a in Model.Roller)
 								{
-									
-									<a style="color: black" asp-controller ="AppRoles" asp-action="AssignRole" asp-route-role="@a.Name" asp-route-userid="@item.Id" class="dropdown-item" >@a.Name</a>
+
+									<a style="color: black" asp-controller="AppRoles" asp-action="AssignRole" asp-route-role="@a.Name" asp-route-userid="@item.Id" class="dropdown-item">@a.Name</a>
 								}
-						
+
 
 							</div>
 						</div>
 
 
 					</td>
-					
+
 				</tr>
 			}
 		</tbody>
