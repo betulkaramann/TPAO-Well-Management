@@ -9,15 +9,34 @@
     <input type="file" id="excelFileInput" accept=".xls" />
     <input type="file" id="fileInput" accept=".json" multiple />
     <input type="file" id="jsonFileInput">
+    <select id="renkSecimi" aria-label="Default select Viridis">
+        <option selected value="Viridis">Renk Seçimi</option>
+        <option value="YlOrRd">YlOrRd</option>
+        <option value="YlGnBu">YlGnBu</option>
+        <option value="RdBu">RdBu</option>
+        <option value="Portland">Portland</option>
+        <option value="Picnic">Picnic</option>
+        <option value="Jet">Jet</option>
+        <option value="Hot">Hot</option>
+        <option value="Greys">Greys</option>
+        <option value="Greens">Greens</option>
+        <option value="Electric">Electric</option>
+        <option value="Earth">Earth</option>
+        <option value="Bluered">Bluered</option>
+        <option value="Blackbody">Blackbody</option>
+    </select>
     <button id="processButton">Dosyaları İşle</button>
     <div id="plot" style="width: 900px; height: 900px;"></div>
-    
+
+
     <script>
+
         function degreesToRadians(degrees) {
             return degrees * (Math.PI / 180);
         }
 
         var scatterData;
+        var scatterData2;
         var surfaceData;
         var flag;
         const plotDiv = document.getElementById('plot');
@@ -86,6 +105,9 @@
             };
             reader.readAsText(file);
         });
+
+
+
 
 
         // Excel data processing
@@ -159,38 +181,40 @@
         });
         var count = 0;
         var selectedFiles = 0;
-        document.getElementById('processButton').addEventListener('click', function () {
+        document.getElementById('processButton').addEventListener('click', async function () {
             var fileInput = document.getElementById('fileInput');
             var selectedFiles = fileInput.files;
-            flag= selectedFiles.length;
-            for(var i = 0; i < selectedFiles.length; i++){
+
+            flag = selectedFiles.length;
+            for (var i = 0; i < selectedFiles.length; i++) {
                 var file = selectedFiles[i];
-                readSurfaceJson(file);
+                await readSurfaceJson(file);
                 count++;
-                
 
             }
-            
-        });
 
+        });
+        
         var values = [];
-        function readSurfaceJson(file){
-        // JSON data processing
+        async function readSurfaceJson(file) {
+            // JSON data processing
             var reader = new FileReader();
 
             reader.onload = function (event) {
-                
+
                 var jsonData = JSON.parse(event.target.result);
 
-                const numRows = jsonData.bins[1]; 
-                const numCols = jsonData.bins[0]; 
+                const numRows = jsonData.bins[1];
+                const numCols = jsonData.bins[0];
                 const extent = jsonData.extent;
                 const extentX = jsonData.extent[0][0];
                 const extentY = jsonData.extent[0][1];
                 const increment = jsonData.increment;
                 const incrementX = jsonData.increment[0];
                 const incrementY = jsonData.increment[1];
-                
+
+
+
                 const xValues = [];
                 const yValues = [];
                 const zValues = [];
@@ -224,15 +248,19 @@
                     y: yValues,
                     z: zValues
                 });
+                resolve();
             };
             if (count == flag)
                 updatePlotly();
             reader.readAsText(file);
         }
-        
+
 
         function updatePlotly() {
             if (scatterData && scatterData2 && values.length == flag) {
+
+
+
                 var scatterLayout = {
                     scene: {
                         aspectmode: 'manual',
@@ -299,26 +327,30 @@
 
                     }
                 };
-                
+
                 var surfaceTraces = values.map(function (surfaceData) {
+                    var renkSecimiElementi = document.getElementById("renkSecimi");
+                    var secilenDeger = renkSecimiElementi.value;
+                    console.log(secilenDeger);
+
                     return {
                         type: 'surface',
                         x: surfaceData.x,
                         y: surfaceData.y,
                         z: surfaceData.z,
-                        colorscale: 'YlGnBu',
+                        colorscale: secilenDeger,
                         colorbar: {
-                            tickvals: [-20, 50], // Renk skalası çubuğunun üzerinde görünecek değerler
+                            tickvals: [-20, 50],
                             ticktext: ['-20', '50'],
                             title: 'TVD',
                             titleside: 'right'
                         }
                     };
                 });
-               
+
                 Plotly.newPlot('plot', [scatterData, scatterData2, ...surfaceTraces], scatterLayout);
-                
-          }  
+
+            }
         }
 
     </script>
