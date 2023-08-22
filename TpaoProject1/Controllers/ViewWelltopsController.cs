@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using System.IO;
-using System;
 using TpaoProject1.Areas.Identity.Data;
 using TpaoProject1.Data;
 using TpaoProject1.Model;
@@ -16,8 +14,6 @@ namespace TpaoProject1.Controllers
         private readonly DatabaseContext _dbContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly MapsGeocodingService _geocodingService;
-
-
         public ViewWelltopsController(DatabaseContext dbContext, UserManager<ApplicationUser> userManager, MapsGeocodingService geocodingService)
         {
             _dbContext = dbContext;
@@ -26,13 +22,11 @@ namespace TpaoProject1.Controllers
 
         }
 
-
         [HttpGet]
         public async Task<IActionResult> AddWellTop()
         {
             ViewBag.ActionName = "AddWellTop";
             ViewBag.ButtonText = "Kaydet";
-
             return View();
         }
 
@@ -42,9 +36,6 @@ namespace TpaoProject1.Controllers
             ViewBag.ActionName = "AddWellTop";
             ViewBag.ButtonText = "Kaydet";
             var WellTopList = _dbContext.WellTops.ToList();
-
-
-            // WellTop well = new WellTop();
             if (ModelState.IsValid)
             {
                 int counter = 0;
@@ -52,9 +43,6 @@ namespace TpaoProject1.Controllers
                 double lati = double.Parse(model.Latitude);//enlem- paralel 36-42
                 double longi = double.Parse(model.Longitude);//boylam - meridyen 26-45
                 string apiKey = "AIzaSyDU_pWP66-BTzvW7AnEcQRSaBPutMzWxU4";
-
-
-
                 string geocodingData = await _geocodingService.GetGeocodingData(lati, longi, apiKey);
                 try
                 {
@@ -73,9 +61,7 @@ namespace TpaoProject1.Controllers
                         model.City = city;
                     }
                     var user = await _userManager.GetUserAsync(User);
-
                     model.UserId = user.Id;
-
                     var numUserId = model.UserId.ToString();
 
                     var Name = model.Name;
@@ -85,7 +71,6 @@ namespace TpaoProject1.Controllers
                     var City = model.City;
                     var InsertionDate = DateTime.Now;
                     var UpdateDate = DateTime.Now;
-
                     WellTop welltop = new WellTop { UserId = numUserId, Name = Name, Latitude = Latitude, Longitude = Longitude, WellTopType = WellTopType, City = City, InsertionDate = InsertionDate, UpdateDate = UpdateDate };
                     var name = welltop.Name;
                     var longitude = welltop.Longitude;
@@ -95,42 +80,26 @@ namespace TpaoProject1.Controllers
                     {
                         _dbContext.WellTops.Add(welltop);
                     }
-                    else 
+                    else
                     {
                         BasicNotification("Koordinatlarınızı tekrar giriniz...", NotificationType.Error, "Seçtiğiniz koordinatlarda kuyu bulunmaktadır");
                         return View();
                     }
-                    //_dbContext.SaveChanges();
                     BasicNotification("Anasayfaya yönlendiriliyorsunuz...", NotificationType.Success, "Kuyu Başarıyla Eklendi!");
                     await _dbContext.SaveChangesAsync();
-
                 }
-                catch (Exception ex) {
-
+                catch (Exception ex)
+                {
                     BasicNotification("Koordinatlarınızı kontrol ediniz..", NotificationType.Question, "Türk deniz sahasını aştınız!");
                 }
-
-                return RedirectToAction("MainPage", "ViewWelltops");
+                return RedirectToAction("AddedWell", "ViewWelltops");
             }
 
 
             return View();
         }
-        public bool IsNameExists(string name)
+        public async Task<IActionResult> AddedWell()
         {
-            return _dbContext.WellTops.Any(u => u.Name == name);
-        }
-
-        public bool IsLocationExists(string longitude, string latitude)
-        {
-            return _dbContext.WellTops.Any(u => u.Latitude == latitude) && _dbContext.WellTops.Any(u => u.Longitude == longitude);
-        }
-
-        public async Task<IActionResult> MainPage(int page = 1, int pageSizee = 50)
-        {
-            IPagedList<WellTop> data = null;
-            
-            
             var user = await _userManager.GetUserAsync(User);
             var WellTopList = _dbContext.WellTops.ToList();
 
@@ -148,19 +117,40 @@ namespace TpaoProject1.Controllers
             var users = _dbContext.Users.ToList();
 
 
-            //var viewModel = new UserRolesViewModel
-            //{
-            //    Kullanicilar = users,
-            //    Kuyular = WellTopList
-
-
-            //};
-            List<WellTop> welltop = new();
-            using (var reader = new StreamReader(@"C:\Users\Büşranur\Desktop\Tpao-main 5000 last\TpaoProject1\Controllers\randomKuyuVerisi.csv"))
+            var viewModel = new UserRolesViewModel
             {
-                //    List<string> listA = new List<string>();
-                //    List<string> listB = new List<string>();
+                Kullanicilar = users,
+                Kuyular = WellTopList
 
+            };
+            return View(viewModel);
+        }
+        public bool IsLocationExists(string longitude, string latitude)
+        {
+            return _dbContext.WellTops.Any(u => u.Latitude == latitude) && _dbContext.WellTops.Any(u => u.Longitude == longitude);
+        }
+
+        public async Task<IActionResult> MainPage(int page = 1, int pageSize = 50)
+        {
+            IPagedList<WellTop> data = null;
+            var user = await _userManager.GetUserAsync(User);
+            var WellTopList = _dbContext.WellTops.ToList();
+
+
+            if (User.IsInRole("Admin"))
+            {
+                WellTopList = _dbContext.WellTops.ToList();
+            }
+            else
+            {
+                WellTopList = _dbContext.WellTops.Where(w => w.UserId == user.Id).ToList();
+            }
+
+
+            var users = _dbContext.Users.ToList();
+            List<WellTop> welltop = new();
+            using (var reader = new StreamReader(@"randomKuyuVerisi.csv"))
+            {
                 bool flag = false;
                 while (!reader.EndOfStream)
                 {
@@ -180,8 +170,7 @@ namespace TpaoProject1.Controllers
                             real_type = "tespit";
                         else if (type_number == 2)
                             real_type = "üretim";
-                        //listA.Add(values[0]);
-                        //listB.Add(values[1]);
+
                         WellTop new_well = new()
                         {
                             UserId = user.Id,
@@ -192,9 +181,9 @@ namespace TpaoProject1.Controllers
                         };
 
                         welltop.Add(new_well);
-                        data = welltop.ToList().ToPagedList(page, pageSizee);
+                        data = welltop.ToList().ToPagedList(page, pageSize);
                     }
-                   
+
                     flag = true;
                 }
             }
@@ -204,25 +193,18 @@ namespace TpaoProject1.Controllers
                 Kullanicilar = users,
                 Kuyular = data,
                 MapKuyular = welltop,
-                PageSize = pageSizee
-
-
+                PageSize = pageSize,
             };
             return View(viewModel);
         }
-
-       
         public async Task<IActionResult> Delete(int id)
         {
-            DeleteNotification("Silinen Kuyu Geri Getirilmez!", NotificationType.Warning, "Emin Misiniz?");
-
             ViewBag.ActionName = "Delete";
             ViewBag.ButtonText = "Sil";
-
             var kuyu = _dbContext.WellTops.Find(id);
             _dbContext.Remove(kuyu);
             _dbContext.SaveChanges();
-            return RedirectToAction("MainPage", "ViewWelltops");
+            return RedirectToAction("AddedWell", "ViewWelltops");
         }
         [HttpGet]
         public async Task<IActionResult> Update(int id)
@@ -247,32 +229,31 @@ namespace TpaoProject1.Controllers
             string geocodingData = await _geocodingService.GetGeocodingData(lati, longi, apiKey);
             try
             {
-				if (!string.IsNullOrEmpty(geocodingData))
-				{
+                if (!string.IsNullOrEmpty(geocodingData))
+                {
 
-					while (city == null)
-					{
-						JObject jsonObject = JObject.Parse(geocodingData);
-						city = jsonObject["results"][counter]["address_components"]
-															 .FirstOrDefault(c => c["types"].Any(t => t.ToString() == "locality" || t.ToString() == "administrative_area_level_1"))?["long_name"]?.ToString();
-						counter++;
-					}
+                    while (city == null)
+                    {
+                        JObject jsonObject = JObject.Parse(geocodingData);
+                        city = jsonObject["results"][counter]["address_components"]
+                                                             .FirstOrDefault(c => c["types"].Any(t => t.ToString() == "locality" || t.ToString() == "administrative_area_level_1"))?["long_name"]?.ToString();
+                        counter++;
+                    }
 
-					welltop.City = city;
-				}
+                    welltop.City = city;
+                }
                 var user = await _userManager.GetUserAsync(User);
 
                 welltop.UserId = user.Id.ToString();
 
                 _dbContext.WellTops.Update(welltop);
-				_dbContext.SaveChanges();
-			}
-			catch (Exception ex) {
-				BasicNotification("Koordinatlarınızı kontrol ediniz..", NotificationType.Question, "Türk deniz sahasını aştınız!");
-
-			}
-
-            return RedirectToAction("MainPage", "ViewWelltops");
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                BasicNotification("Koordinatlarınızı kontrol ediniz..", NotificationType.Question, "Türk deniz sahasını aştınız!");
+            }
+            return RedirectToAction("AddedWell", "ViewWelltops");
 
         }
         [AcceptVerbs("GET", "POST")]
@@ -288,8 +269,6 @@ namespace TpaoProject1.Controllers
                 return Json(true);
             }
         }
-
-
 
     }
 }

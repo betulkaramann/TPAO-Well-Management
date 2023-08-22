@@ -1,8 +1,8 @@
 ﻿@using TpaoProject1.Model;
-@model TpaoProject1.Models.PageUserModel
+@model UserRolesViewModel
 @using Microsoft.AspNetCore.Identity
 @using TpaoProject1.Areas.Identity.Data;
-@using X.PagedList.Mvc.Core
+
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -33,111 +33,62 @@
 
             setMarkers(map);
         }
+
         @{
-            // Create a list to store the data as JSON objects
             List<object[]> beachData = new List<object[]>();
 
-            foreach (var kuyu in Model.MapKuyular)
+            foreach (var kuyu in Model.Kuyular)
             {
                 // Assuming Kuyular contains properties: Name, Latitude, and Longitude
                 var name = kuyu.Name;
                 double latitude = double.Parse(kuyu.Latitude);
                 double longitude = double.Parse(kuyu.Longitude);
-                var type = kuyu.WellTopType;
-                // Add the data to the beachData list as a JSON object
-                beachData.Add(new object[] { name, latitude, longitude, beachData.Count() + 1, type });
+                beachData.Add(new object[] { name, latitude, longitude, beachData.Count() + 1 });
             }
         }
-
-                               const beaches = @Html.Raw(Json.Serialize(beachData));
+                    const beaches = @Html.Raw(Json.Serialize(beachData));
 
         function setMarkers(map) {
             // Adds markers to the map.
-            // Marker sizes are expressed as a Size of X,Y where the origin of the image
-            const dotOrange = {
-                url: "/css/orangedot.png",
+            const image = {
+                url: "/css/wellicon.png",
+                // This marker is 20 pixels wide by 32 pixels high.
                 size: new google.maps.Size(32, 32),
+                // The origin for this image is (0, 0).
                 origin: new google.maps.Point(0, 0),
+                // The anchor for this image is the base of the flagpole at (0, 32).
                 anchor: new google.maps.Point(0, 32),
             };
-            const dotYellow = {
-
-                url: "/css/yellowdot.png",
-                size: new google.maps.Size(32, 32),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(0, 32),
-            };
-            const dotBlue = {
-
-                url: "/css/bluedot.png",
-                size: new google.maps.Size(32, 32),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(0, 32),
-            };
-            // The final coordinate closes the poly by connecting to the first coordinate.
+            // Shapes define the clickable region of the icon. The type defines an HTML
             const shape = {
                 coords: [1, 1, 1, 20, 18, 20, 18, 1],
                 type: "poly",
             };
-
             for (let i = 0; i < beaches.length; i++) {
                 const beach = beaches[i];
-                if (beach[4] == "tespit") {
-                    const marker = new google.maps.Marker({
-                        position: { lat: beach[1], lng: beach[2] },
-                        map,
-                        icon: dotOrange,//turuncu
-                        shape: shape,
-                        title: beach[0],
-                        zIndex: beach[3],
-                    });
-                    // Add a click event listener to show the marker title in an info window
-                    marker.addListener("click", () => {
-                        const infoWindow = new google.maps.InfoWindow({
-                            content: beach[0],
-                        });
-                        infoWindow.open(map, marker); // Open the info window on the clicked marker
-                    });
-                }
-                else if (beach[4] == "üretim") {
-                    const marker1 = new google.maps.Marker({
-                        position: { lat: beach[1], lng: beach[2] },
-                        map,
-                        icon: dotYellow, //sari
-                        shape: shape,
-                        title: beach[0],
-                        zIndex: beach[3],
+                const marker = new google.maps.Marker({
+                    position: { lat: beach[1], lng: beach[2] },
+                    map,
+                    icon: image,
+                    shape: shape,
+                    title: beach[0],
+                    zIndex: beach[3],
+                });
 
+                // Add a click event listener to show the marker title in an info window
+                marker.addListener("click", () => {
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: beach[0],
                     });
-                    marker1.addListener("click", () => {
-                        const infoWindow = new google.maps.InfoWindow({
-                            content: beach[0],
-                        });
-                        infoWindow.open(map, marker1);
-                    });
-                }
-                else if (beach[4] == "arama") {
-                    const marker2 = new google.maps.Marker({
-                        position: { lat: beach[1], lng: beach[2] },
-                        map,
-                        icon: dotBlue, //mavi
-                        shape: shape,
-                        title: beach[0],
-                        zIndex: beach[3],
-                    });
-                    marker2.addListener("click", () => {
-                        const infoWindow = new google.maps.InfoWindow({
-                            content: beach[0],
-                        });
-                        infoWindow.open(map, marker2);
-                    });
-                }
+                    infoWindow.open(map, marker);
+                });
             }
-
         }
         window.initMap = initMap;
+
     </script>
     <style>
+
         #map {
             height: 400px;
         }
@@ -227,6 +178,18 @@
             margin: 0 5px;
         }
 
+            table.table td a.view {
+                color: #03A9F4;
+            }
+
+            table.table td a.edit {
+                color: #FFC107;
+            }
+
+            table.table td a.delete {
+                color: #E34724;
+            }
+
         table.table td i {
             font-size: 19px;
         }
@@ -282,11 +245,17 @@
             color: red;
         }
 
-            .all a {
-                display: inline-block;
-                color: red;
-                margin-right: 10px;
-            }
+        .icon-location {
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            text-align: center;
+        }
+
+        .all a {
+            display: inline-block;
+            margin-right: 10px;
+        }
 
         .wrapper_wgC-k {
             width: calc(100% - 3.2rem);
@@ -296,6 +265,7 @@
             text-align: center;
             align-items: center;
         }
+
 
         .content_Z9h8v {
             padding-bottom: 5.6rem;
@@ -344,6 +314,7 @@
         <div class="container-xl">
             <div class="table-responsive">
                 <div class="table-wrapper">
+
                     <table class="table table-striped table-hover table-bordered">
                         <thead class="bg-light">
                             <tr>
@@ -357,6 +328,7 @@
                                 <th>Boylam</th>
                                 <th>Oluşturma Tarihi</th>
                                 <th>Güncelleme Tarihi</th>
+                                <th>İşlemler</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -403,13 +375,24 @@
                                     </td>
                                     <td>@wells.InsertionDate</td>
                                     <td>@wells.UpdateDate</td>
+
+                                    <td class="icon-location">
+                                        <div class="all">
+                                            <a asp-controller="Well" asp-action="ViewWell" asp-route-id="@wells.Id" class="view" title="Detayları Görüntüle"><i class="fa fa-eye"></i></a>
+                                            <a asp-controller="ViewWelltops" asp-action="Update" asp-route-id="@wells.Id" class="edit" title="Düzenle"><i class="fa fa-pencil"></i></a>
+                                            <a asp-controller="ViewWelltops" asp-action="Delete" asp-route-id="@wells.Id" title="Kaydı Sil" onclick="return functionConfirm(this)">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+
+                                        </div>
+                                    </td>
                                 </tr>
                             }
+
+
                         </tbody>
                     </table>
-                    <div class="pagination">
-                        @Html.PagedListPager(Model.Kuyular, page => Url.Action("MainPage", new { page ,pageSize = Model.PageSize }))
-                    </div>
+
                 </div>
 
             </div>
