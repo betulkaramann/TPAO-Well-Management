@@ -4,172 +4,153 @@
 }
 @model WellTop
 <html>
-    
-    <head>
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
-        <style>
-            #container {
-                max-width: 600px;
-                max-height: 20px;
-                /* Center the container in middle on horizontal axis */
-                margin: 0 auto;
-                /* Add empty space above the container (20% of the view height) */
-                margin-top: 5vh;
-            }
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
-            .card {
-                /* Change background color */
-                background-color: white;
-                /* Add border */
-                border: 1px solid #bacdd8;
-                /* Add space between the border and the content */
-                padding: 8px;
-                border-radius: 12px;
-            }
-            /* Style div elements that have class equal to tag */
-            .tag {
-                padding: 4px 8px;
-                border: 1px solid #e5eaed;
-                border-radius: 50px;
-                font-size: 19px;
-                font-weight: 600;
-                color: #788697;
-                text-align:center;
-            }
+    <style>
+        #container {
+            max-width: 600px;
+            margin: 0 auto;
+            margin-top: 10vh;
+            margin-bottom: 15vh;
+        }
 
-            /* Style div elements that have class equal to name */
-            .name {
-                font-size: 30px;
-                font-weight: 600;
-                margin-top: 16px;
-                text-align: center;
-            }
+        .card {
+            background-color: white;
+            border: 1px solid #bacdd8;
+            padding: 8px;
+            border-radius: 12px;
+        }
 
-            /* Style p element */
-            p {
-                font-size: 18px;
-                color: #7f8c9b;
-                line-height: 150%;
-                text-align: center;
-            }
+        .tag {
+            padding: 4px 8px;
+            border: 1px solid #e5eaed;
+            border-radius: 50px;
+            font-size: 19px;
+            font-weight: 600;
+            color: #788697;
+            text-align: center;
+        }
 
-            /* Style button element */
-            button {
-                border: none;
-                padding: 12px 24px;
-                border-radius: 50px;
-                font-weight: 600;
-                color: #0077ff;
-                background-color: #e0efff;
-                /* Button is inline-block element by default, it need to have block display for margin: 0 auto; to work */
-                margin: 0 auto;
-                margin-top:15px;
-                display: block;
-                /* Button is a clickable element, therefore it should have a pointer cursor */
-                cursor: pointer;
-            }
+        .name {
+            font-size: 30px;
+            font-weight: 600;
+            margin-top: 16px;
+            text-align: center;
+        }
 
-            .card__details {
-                /* Add space around the details */
-                padding: 16px 8px 8px 8px;
-                font-size:20px;
-                text-align: center;
-             }
-            .alert {
-                margin-top: 20px;
-            }
-        </style>
-    </head>
-   
-    <body>
-    @if (TempData["status"] != null)
+        p {
+            font-size: 18px;
+            color: #7f8c9b;
+            line-height: 150%;
+            text-align: center;
+        }
+
+        button {
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #0077ff;
+            background-color: #e0efff;
+            margin: 0 auto;
+            margin-top: 15px;
+            display: block;
+            cursor: pointer;
+        }
+
+        .card__details {
+            padding: 16px 8px 8px 8px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+
+        body {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+
+
+@*formasyondak verilerin kontrol noktası*@
+@if (TempData["status"] != null)
+{
+    if (TempData["status"].ToString() == "same_formation")
     {
-        if (TempData["status"].ToString() == "same_formation")
-        {
-            <div style="margin-top:15px;" class="alert alert-primary" role="alert">
-                Girilen formasyon zaten var
-            </div>
-        }
-        else if (TempData["status"].ToString() == "lower_formation")
-        {
-            <div style="margin-top:15px;" class="alert alert-warning" role="alert">
-                Yeni formasyon metresi önceki formasyondan daha küçük olamaz
-            </div>
-        }
-        else if (TempData["status"].ToString() == "out of order")
-        {
-            <div style="margin-top:15px; " class="alert alert-info" role="alert">
-                Formasyon sınırları 0 ila 10000 arasında olmalıdır
-            </div>
-        }
+        <div style="margin-top:15px;" class="alert alert-primary" role="alert">
+            Girilen formasyon zaten var
+        </div>
     }
-    <form asp-controller="Well" asp-action="AddFormation" method="post">
-        @*
-        <input class="form-control" type="text" asp-for="Name" value="@Model.Name" aria-label="Disabled input example" disabled readonly>
-        <input class="form-control" type="text" asp-for="Latitude" value="@Model.Latitude" aria-label="Disabled input example" disabled readonly>
-        <input class="form-control" type="text" asp-for="Longitude" value="@Model.Longitude" aria-label="Disabled input example" disabled readonly>*@
-        <body>
-            <!-- A div with container id to hold the card -->
-            <div id="container">
-
-                <!-- A div with card class for the card  -->
-                <div class="card">
-                    <img src="https://trthaberstatic.cdn.wp.trt.com.tr/resimler/1458000/1458031.jpg" style="padding:10px" alt="Lago di Braies">
-
-                    <!-- A div with card__details class to hold the details in the card  -->
-                    <div class="card__details">
-
-                        <!-- Span with tag class for the tag -->
-                        <span class="tag">
-                            @{
-                                if (Model.WellTopType == "arama")
-                                {
-                                    <span class="badge badge-primary rounded-pill d-inline">Arama</span>
-                                }
-                                else if (Model.WellTopType == "üretim")
-                                {
-                                    <span class="badge badge-success rounded-pill d-inline">Üretim</span>
-                                }
-                                else if (Model.WellTopType == "tespit")
-                                {
-                                    <span class="badge badge-info rounded-pill d-inline">Tespit</span>
-                                }
-
+    else if (TempData["status"].ToString() == "lower_formation")
+    {
+        <div style="margin-top:15px;" class="alert alert-warning" role="alert">
+            Yeni formasyon metresi önceki formasyondan daha küçük olamaz
+        </div>
+    }
+    else if (TempData["status"].ToString() == "out of order")
+    {
+        <div style="margin-top:15px; " class="alert alert-info" role="alert">
+            Formasyon sınırları 0 ila 10000 arasında olmalıdır
+        </div>
+    }
+}
+<form asp-controller="Well" asp-action="AddFormation" method="post">
+    <body>
+        <div id="container">
+            <div class="card">
+                <img src="https://trthaberstatic.cdn.wp.trt.com.tr/resimler/1458000/1458031.jpg" style="padding:10px" alt="Lago di Braies">
+                <div class="card__details">
+                    <span class="tag">
+                        @{
+                            if (Model.WellTopType == "arama")
+                            {
+                                <span class="badge badge-primary rounded-pill d-inline">Arama</span>
                             }
-                        </span>
+                            else if (Model.WellTopType == "üretim")
+                            {
+                                <span class="badge badge-success rounded-pill d-inline">Üretim</span>
+                            }
+                            else if (Model.WellTopType == "tespit")
+                            {
+                                <span class="badge badge-info rounded-pill d-inline">Tespit</span>
+                            }
 
-                        <!-- A div with name class for the name of the card -->
-                        <div asp-for="Name" class="name">@Model.Name</div>
-
-                        <p asp-for="Latitude">
-                            Enlem: @Model.Latitude
-                        </p>
-                        <p asp-for="Longitude">
-                            Boylam: @Model.Longitude
-                        </p>
-                        <div class="input-group">
-                            <span class="input-group-text ">Enter Formation Type and Meter</span>
-                            <select class="form-select " name="Form_type" required>
-                                <option disabled>Select Formation Type</option>
-                                @{
-                                    for (char i = 'A'; i <= 'Z'; i++)
-                                    {
-
-                                        <option value="@i"> @i </option>
-                                    }
+                        }
+                    </span>
+                    <div asp-for="Name" class="name">@Model.Name</div>
+                    <p asp-for="Latitude">
+                        Enlem: @Model.Latitude
+                    </p>
+                    <p asp-for="Longitude">
+                        Boylam: @Model.Longitude
+                    </p>
+                    <div class="input-group">
+                        <span class="input-group-text ">Enter Formation Type and Meter</span>
+                        <select class="form-select " name="Form_type" required>
+                            <option disabled>Select Formation Type</option>
+                            @{
+                                //bütün formasyon türleri listelenir A dan Z ye kadar
+                                for (char i = 'A'; i <= 'Z'; i++)
+                                {
+                                    <option value="@i"> @i </option>
                                 }
-                            </select>
-                            <input type="text" name="Form_meter" class="form-control" placeholder="0-10000" required />
+                            }
+                        </select>
+                        <input type="text" name="Form_meter" class="form-control" placeholder="0-10000" required />
 
-                        </div>
-                        <button type="submit" name="submit">Formasyon Ekle</button>
                     </div>
+                    <button type="submit" name="submit">Formasyon Ekle</button>
                 </div>
             </div>
-        </body>
-    </form>
+        </div>
+    </body>
+</form>
 
-</body>
 </html>

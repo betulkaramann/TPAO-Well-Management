@@ -3,7 +3,77 @@
     ViewData["Title"] = "UpdateFormation";
 }
 @model Formation
-@*@if (TempData["Error"] != null)
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <style>
+        #container {
+            max-width: 600px;
+            margin: 0 auto;
+            margin-top: 10vh;
+            margin-bottom: 15vh;
+        }
+
+        .card {
+            background-color: white;
+            border: 1px solid #bacdd8;
+            padding: 8px;
+            border-radius: 12px;
+        }
+
+        .tag {
+            padding: 4px 8px;
+            border: 1px solid #e5eaed;
+            border-radius: 50px;
+            font-size: 19px;
+            font-weight: 600;
+            color: #788697;
+            text-align: center;
+        }
+
+        .name {
+            font-size: 30px;
+            font-weight: 600;
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 18px;
+            color: #7f8c9b;
+            line-height: 150%;
+            text-align: center;
+        }
+
+        button {
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #0077ff;
+            background-color: #e0efff;
+            margin: 0 auto;
+            margin-top: 15px;
+            display: block;
+            cursor: pointer;
+        }
+
+        .card__details {
+            padding: 16px 8px 8px 8px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .alert {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+@if (TempData["Error"] != null)@*güncellenen verilerin içeriğinin kontrolü burda sağlanır*@
 {
     if (TempData["Error"].ToString() == "smaller")
     {
@@ -13,194 +83,63 @@
     }
     else if (TempData["Error"].ToString() == "bigger")
     {
-        <div class="alert alert-secondary" role="alert">
+        <div class="alert alert-danger" role="alert">
             Güncellenen formasyon sonrakinden küçük olmalıdır
         </div>
     }
     else if (TempData["Error"].ToString() == "out of order")
     {
-        <div class="alert alert-secondary" role="alert">
+        <div class="alert alert-dark" role="alert">
             Güncellenen formasyon değeri 0 ila 10000 metre arasında olmalıdır
         </div>
     }
 }
 <form asp-controller="Well" asp-action="UpdateFormation" method="post">
-    <input class="form-control" type="text" name="Name" value="@ViewData["name"]" aria-label="Disabled input example" disabled readonly>
-    <input class="form-control" type="text" name="Latitude" value="@ViewData["latitude"]" aria-label="Disabled input example" disabled readonly>
-    <input class="form-control" type="text" name="Longitude" value="@ViewData["longitude"]" aria-label="Disabled input example" disabled readonly>
-
-    <div class="input-group">
-        <span class="input-group-text ">Update Formation Type and Meter</span>
-        <select class="form-select " name="Form_type" required>
-            <option disabled>Select Formation Type</option>
-            <option value="@Model.Form_type"> @Model.Form_type </option>
-        </select>
-        <input type="text" name="Form_meter" class="form-control" placeholder="Update Formation Meter (Between 0-10000)" required />
-        <button type="submit" name="submit" class="btn btn-primary">Update</button>
-    </div>
-</form>
-*@
-<html>
-    
-    <head>
-        <link rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-
-        <style>
-            #container {
-                max-width: 600px;
-                max-height: 20px;
-                /* Center the container in middle on horizontal axis */
-                margin: 0 auto;
-                /* Add empty space above the container (20% of the view height) */
-                margin-top: 5vh;
-            }
-
-            .card {
-                /* Change background color */
-                background-color: white;
-                /* Add border */
-                border: 1px solid #bacdd8;
-                /* Add space between the border and the content */
-                padding: 8px;
-                border-radius: 12px;
-            }
-            /* Style div elements that have class equal to tag */
-            .tag {
-                padding: 4px 8px;
-                border: 1px solid #e5eaed;
-                border-radius: 50px;
-                font-size: 19px;
-                font-weight: 600;
-                color: #788697;
-                text-align:center;
-            }
-
-            /* Style div elements that have class equal to name */
-            .name {
-                font-size: 30px;
-                font-weight: 600;
-                margin-top: 16px;
-                text-align: center;
-            }
-
-            /* Style p element */
-            p {
-                font-size: 18px;
-                color: #7f8c9b;
-                line-height: 150%;
-                text-align: center;
-            }
-
-            /* Style button element */
-            button {
-                border: none;
-                padding: 12px 24px;
-                border-radius: 50px;
-                font-weight: 600;
-                color: #0077ff;
-                background-color: #e0efff;
-                /* Button is inline-block element by default, it need to have block display for margin: 0 auto; to work */
-                margin: 0 auto;
-                margin-top:15px;
-                display: block;
-                /* Button is a clickable element, therefore it should have a pointer cursor */
-                cursor: pointer;
-            }
-
-            .card__details {
-                /* Add space around the details */
-                padding: 16px 8px 8px 8px;
-                font-size:20px;
-                text-align: center;
-            }
-            .alert{
-                margin-top:20px;
-            }
-        </style>
-    </head>
-   
     <body>
-    @if (TempData["Error"] != null)
-    {
-        if (TempData["Error"].ToString() == "smaller")
-        {
-            <div class="alert alert-secondary" role="alert">
-                Güncellenen formasyon öncekiden büyük olmalıdır
-            </div>
-        }
-        else if (TempData["Error"].ToString() == "bigger")
-        {
-            <div class="alert alert-danger" role="alert">
-                Güncellenen formasyon sonrakinden küçük olmalıdır
-            </div>
-        }
-        else if (TempData["Error"].ToString() == "out of order")
-        {
-            <div class="alert alert-dark" role="alert">
-                Güncellenen formasyon değeri 0 ila 10000 metre arasında olmalıdır
-            </div>
-        }
-    }
-    <form asp-controller="Well" asp-action="UpdateFormation" method="post">
-        @*
-        <input class="form-control" type="text" asp-for="Name" value="@Model.Name" aria-label="Disabled input example" disabled readonly>
-        <input class="form-control" type="text" asp-for="Latitude" value="@Model.Latitude" aria-label="Disabled input example" disabled readonly>
-        <input class="form-control" type="text" asp-for="Longitude" value="@Model.Longitude" aria-label="Disabled input example" disabled readonly>*@
-        <body>
-            <!-- A div with container id to hold the card -->
-            <div id="container">
+        <div id="container">
 
-                <!-- A div with card class for the card  -->
-                <div class="card">
-                    <img src="https://trthaberstatic.cdn.wp.trt.com.tr/resimler/1458000/1458031.jpg" style="padding:10px" alt="Lago di Braies">
-
-                    <!-- A div with card__details class to hold the details in the card  -->
-                    <div class="card__details">
-
-                        <!-- Span with tag class for the tag -->
-                        <span class="tag">
-                            @{
-                                if (ViewData["well_type"].ToString() == "arama")
-                                {
-                                    <span class="badge badge-primary rounded-pill d-inline">Arama</span>
-                                }
-                                else if (ViewData["well_type"].ToString() == "üretim")
-                                {
-                                    <span class="badge badge-success rounded-pill d-inline">Üretim</span>
-                                }
-                                else if (ViewData["well_type"].ToString() == "tespit")
-                                {
-                                    <span class="badge badge-info rounded-pill d-inline">Tespit</span>
-                                }
-
+            <div class="card">
+                <img src="https://trthaberstatic.cdn.wp.trt.com.tr/resimler/1458000/1458031.jpg" style="padding:10px" alt="Lago di Braies">
+                <div class="card__details">
+                    <span class="tag">
+                        @{
+                            if (ViewData["well_type"].ToString() == "arama")
+                            {
+                                <span class="badge badge-primary rounded-pill d-inline">Arama</span>
                             }
-                        </span>
+                            else if (ViewData["well_type"].ToString() == "üretim")
+                            {
+                                <span class="badge badge-success rounded-pill d-inline">Üretim</span>
+                            }
+                            else if (ViewData["well_type"].ToString() == "tespit")
+                            {
+                                <span class="badge badge-info rounded-pill d-inline">Tespit</span>
+                            }
 
-                        <!-- A div with name class for the name of the card -->
-                        <div asp-for="Name" class="name">@ViewData["name"]</div>
+                        }
+                    </span>
 
-                        <p asp-for="Latitude">
-                            Enlem: @ViewData["latitude"]
-                        </p>
-                        <p asp-for="Longitude">
-                            Boylam: @ViewData["longitude"]
-                        </p>
-                        <div class="input-group">
-                            <span class="input-group-text ">Formasyon Derinliğini Güncelleyin</span>
-                            <select class="form-select " name="Form_type" required>
-                                @*<option disabled>Select Formation Type</option>*@
-                                <option value="@Model.Form_type"> @Model.Form_type </option>
-                            </select>
-                            <input type="text" name="Form_meter" class="form-control" placeholder="@Model.Form_meter" required />
+                    <div asp-for="Name" class="name">@ViewData["name"]</div>
 
-                        </div>
-                        <button type="submit" name="submit">Formasyonu Güncelle</button>
+                    <p asp-for="Latitude">
+                        Enlem: @ViewData["latitude"]
+                    </p>
+                    <p asp-for="Longitude">
+                        Boylam: @ViewData["longitude"]
+                    </p>
+                    <div class="input-group">
+                        <span class="input-group-text ">Formasyon Derinliğini Güncelleyin</span>
+                        <select class="form-select " name="Form_type" required>
+                            <option value="@Model.Form_type"> @Model.Form_type </option>
+                        </select>
+                        <input type="text" name="Form_meter" class="form-control" placeholder="@Model.Form_meter" required />
+
                     </div>
+                    <button type="submit" name="submit">Formasyonu Güncelle</button>
                 </div>
             </div>
-        </body>
-    </form>
+        </div>
+    </body>
+</form>
 
-</body>
 </html>
