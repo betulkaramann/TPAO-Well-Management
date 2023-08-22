@@ -10,8 +10,4 @@
     <PackageReference Include="Newtonsoft.Json.Bson" Version="1.0.3-beta1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\TpaoProject1\TpaoProject1.csproj" />
-  </ItemGroup>
-
 </Project>

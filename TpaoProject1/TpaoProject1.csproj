@@ -29,6 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GeoSimplifier\GeoSimplifier.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="GeoSimplifier">
       <HintPath>..\..\Line-simplification--unit-testing-functions\GeoSimplifier\bin\Debug\net6.0\GeoSimplifier.dll</HintPath>
     </Reference>

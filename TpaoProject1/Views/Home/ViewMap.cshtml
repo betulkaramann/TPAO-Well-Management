@@ -1,77 +1,93 @@
 @using Newtonsoft.Json;
-
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <script>
-        <link rel="stylesheet" href = "https://fonts.googleapis.com/icon?family=Material+Icons" >
-            <link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" >
-                <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+	<style>
+		#map {
+			height: 500px; 
+		}
+	</style>
+	<script>
+		<link rel="stylesheet" href = "https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" >
+			<link rel="stylesheet" href = "https://fonts.googleapis.com/icon?family=Material+Icons" >
+				<link rel="stylesheet" href = "https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" >
+					<script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 
-    <script>
-        @*map okuması burada gerçekleşiyor*@
-                    function initMap() {
-                        const map = new google.maps.Map(document.getElementById("map"), {
-                            zoom: 6,
-                            center: {
-                                lat: 38.934934,
-                                lng: 34.861613
-                            },
-                        });
-        @{
-            var tempList = ViewBag.PureListJson;
-            var tempListData = JsonConvert.DeserializeObject<List<Dictionary<string, double>>>(tempList);
-            List<(double x, double y)> jsonList = new();
-            List<(double x, double y)> jsonPureList = new();
 
-            foreach (var coordinate in tempListData)
-            {
-                if (coordinate.ContainsKey("Item1") && coordinate.ContainsKey("Item2"))
-                {
-                    double x = coordinate["Item1"];
-                    double y = coordinate["Item2"];
-                    jsonList.Add((x, y));
-                }
-            }
-            List<(double x, double y)> pureList = GeoSimplifier.LineSimplificator.SimplifyPoints(jsonList, 0, jsonList.Count - 1, 100);
-            pureList.Add((jsonList[jsonList.Count() - 1].x, jsonList[jsonList.Count() - 1].y));
-
-        }
-                                        var tempList = @Html.Raw(tempList);
-                        const lineCoordinates = [];
-                        for (let i = 0; i < tempList.length; i++) {
-                            const point = tempList[i];
-                            const latitude = (point.Item1 / 10000).toFixed(4); // Bölerek noktadan sonra 4 basamak
-                            const longitude = (point.Item2 / 100000).toFixed(5); // Bölerek noktadan sonra 4 basamak
-                            const marker = new google.maps.Marker({
-                                position: { lat: latitude, lng: longitude },
-                                map,
-                            });
-                            lineCoordinates.push({ lat: latitude, lng: longitude });
-                        }
-
-                        var line = new google.maps.Polyline({
-                            path: lineCoordinates,
-                            geodesic: true,
-                            strokeColor: "#FF0000",
-                            strokeOpacity: 1.0,
-                            strokeWeight: 2,
-                        });
-
-                        line.setMap(map);
-                    }
-
-        window.initMap = initMap;
-
-    </script>
 </head>
 <body>
-    <div id="map"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU_pWP66-BTzvW7AnEcQRSaBPutMzWxU4&callback=initMap&v=weekly"
-            defer></script>
+	<div id="map"></div>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU_pWP66-BTzvW7AnEcQRSaBPutMzWxU4&callback=initMap&v=weekly"
+			defer></script>
+	<script>
+						function initMap() {
+							const map = new google.maps.Map(document.getElementById("map"), {
+								zoom: 6,
+								center: {
+									lat: 38.934934,
+									lng: 34.861613
+								},
+							});
+		@{
+			var tempList = ViewBag.PureListJson;
+			var tempListData = JsonConvert.DeserializeObject<List<Dictionary<string, double>>>(tempList);
+
+			List<(double x, double y)> jsonList = new();
+			List<(double x, double y)> jsonPureList = new();
+
+
+
+			foreach (var coordinate in tempListData)
+			{
+				if (coordinate.ContainsKey("Item1") && coordinate.ContainsKey("Item2"))
+				{
+					double x = coordinate["Item1"];
+					double y = coordinate["Item2"];
+
+					jsonList.Add((x, y));
+				}
+			}
+
+			List<(double x, double y)> pureList = GeoSimplifier.LineSimplificator.SimplifyPoints(jsonList, 0, jsonList.Count - 1, 100);
+			pureList.Add((jsonList[jsonList.Count() - 1].x, jsonList[jsonList.Count() - 1].y));
+
+		}
+									var tempList = @Html.Raw(tempList); 
+
+							const lineCoordinates = [];
+							for (let i = 0; i < tempList.length; i++) {
+								const point = tempList[i];
+								const latitude = point.Item2 / 100000;
+								const longitude = point.Item1 / 10000;
+								const marker = new google.maps.Marker({
+									position: { lat: latitude, lng: longitude },
+									map,
+								});
+								lineCoordinates.push({ lat: latitude, lng: longitude });
+							}
+
+
+
+
+							var line = new google.maps.Polyline({
+								path: lineCoordinates,
+								geodesic: true,
+								strokeColor: "#FF0000",
+								strokeOpacity: 1.0,
+								strokeWeight: 2,
+							});
+
+							line.setMap(map);
+						}
+
+		window.initMap = initMap;
+
+
+	</script>
 </body>
 </html>
