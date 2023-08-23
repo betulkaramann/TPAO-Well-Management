@@ -1,24 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
-namespace TpaoProject1.Model
+namespace TpaoWebApp.Model
 {
     public class Formation
     {
-        public Formation(int well_id)
+        public Formation(int _WellId)
         {
-            wellid = well_id;
+            WellId = _WellId;
         }
         public Formation()
         {
-
         }
         [Key]
         public int Id { get; set; }
-
-        public int wellid { get; set; }
-
-        public string? Form_type { get; set; }
-        public int? Form_meter { get; set; }
+        public int WellId { get; set; }
+        public string? FormationType { get; set; }
+        public int? FormationMeter { get; set; }
 
 
     }
