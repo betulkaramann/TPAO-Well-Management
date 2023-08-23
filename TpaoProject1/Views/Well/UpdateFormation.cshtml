@@ -1,145 +1,150 @@
-﻿@using TpaoProject1.Model;
+@using TpaoWebApp.Model;
 @{
     ViewData["Title"] = "UpdateFormation";
 }
 @model Formation
+
 <html>
+    
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
 
-<head>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <style>
+            #container {
+                max-width: 600px;
+                max-height: 20px;
+                margin: 0 auto;
+                margin-top: 5vh;
+            }
 
-    <style>
-        #container {
-            max-width: 600px;
-            margin: 0 auto;
-            margin-top: 10vh;
-            margin-bottom: 15vh;
-        }
+            .card {
+                background-color: white;
+                border: 1px solid #bacdd8;
+                padding: 8px;
+                border-radius: 12px;
+            }
+            .tag {
+                padding: 4px 8px;
+                border: 1px solid #e5eaed;
+                border-radius: 50px;
+                font-size: 19px;
+                font-weight: 600;
+                color: #788697;
+                text-align:center;
+            }
 
-        .card {
-            background-color: white;
-            border: 1px solid #bacdd8;
-            padding: 8px;
-            border-radius: 12px;
-        }
+            .name {
+                font-size: 30px;
+                font-weight: 600;
+                margin-top: 16px;
+                text-align: center;
+            }
 
-        .tag {
-            padding: 4px 8px;
-            border: 1px solid #e5eaed;
-            border-radius: 50px;
-            font-size: 19px;
-            font-weight: 600;
-            color: #788697;
-            text-align: center;
-        }
+            p {
+                font-size: 18px;
+                color: #7f8c9b;
+                line-height: 150%;
+                text-align: center;
+            }
 
-        .name {
-            font-size: 30px;
-            font-weight: 600;
-            margin-top: 16px;
-            text-align: center;
-        }
+            button {
+                border: none;
+                padding: 12px 24px;
+                border-radius: 50px;
+                font-weight: 600;
+                color: #0077ff;
+                background-color: #e0efff;
+                margin: 0 auto;
+                margin-top:15px;
+                display: block;
+                cursor: pointer;
+            }
 
-        p {
-            font-size: 18px;
-            color: #7f8c9b;
-            line-height: 150%;
-            text-align: center;
-        }
-
-        button {
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-weight: 600;
-            color: #0077ff;
-            background-color: #e0efff;
-            margin: 0 auto;
-            margin-top: 15px;
-            display: block;
-            cursor: pointer;
-        }
-
-        .card__details {
-            padding: 16px 8px 8px 8px;
-            font-size: 20px;
-            text-align: center;
-        }
-
-        .alert {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-
-@if (TempData["Error"] != null)@*güncellenen verilerin içeriğinin kontrolü burda sağlanır*@
-{
-    if (TempData["Error"].ToString() == "smaller")
-    {
-        <div class="alert alert-secondary" role="alert">
-            Güncellenen formasyon öncekiden büyük olmalıdır
-        </div>
-    }
-    else if (TempData["Error"].ToString() == "bigger")
-    {
-        <div class="alert alert-danger" role="alert">
-            Güncellenen formasyon sonrakinden küçük olmalıdır
-        </div>
-    }
-    else if (TempData["Error"].ToString() == "out of order")
-    {
-        <div class="alert alert-dark" role="alert">
-            Güncellenen formasyon değeri 0 ila 10000 metre arasında olmalıdır
-        </div>
-    }
-}
-<form asp-controller="Well" asp-action="UpdateFormation" method="post">
+            .card__details {
+                padding: 16px 8px 8px 8px;
+                font-size:20px;
+                text-align: center;
+            }
+            .alert{
+                margin-top:20px;
+            }
+        </style>
+    </head>
+   
     <body>
-        <div id="container">
+    @if (TempData["Error"] != null)
+    {
+        if (TempData["Error"].ToString() == "Smaller")
+        {
+            <div class="alert alert-secondary" role="alert">
+                Güncellenen formasyon önceki formasyondan büyük olmalıdır
+            </div>
+        }
+        else if (TempData["Error"].ToString() == "Bigger")
+        {
+            <div class="alert alert-danger" role="alert">
+                Güncellenen formasyon sonraki formasyondan küçük olmalıdır
+            </div>
+        }
+        else if (TempData["Error"].ToString() == "OutofOrder")
+        {
+            <div class="alert alert-dark" role="alert">
+                Güncellenen formasyon değeri 0 ila 10000 metre arasında olmalıdır
+            </div>
+        }
+    }
+    <form asp-controller="Well" asp-action="UpdateFormation" method="post">
+        
+        <body>
+            <div id="container">
 
-            <div class="card">
-                <img src="https://trthaberstatic.cdn.wp.trt.com.tr/resimler/1458000/1458031.jpg" style="padding:10px" alt="Lago di Braies">
-                <div class="card__details">
-                    <span class="tag">
-                        @{
-                            if (ViewData["well_type"].ToString() == "arama")
-                            {
-                                <span class="badge badge-primary rounded-pill d-inline">Arama</span>
+                <div class="card">
+                    <img src="https://trthaberstatic.cdn.wp.trt.com.tr/resimler/1458000/1458031.jpg" style="padding:10px" alt="Lago di Braies">
+
+                    <div class="card__details">
+
+                        <span class="tag">
+                            @{
+                                if (ViewData["well_type"].ToString() == "arama")
+                                {
+                                    <span class="badge badge-primary rounded-pill d-inline">Arama</span>
+                                }
+                                else if (ViewData["well_type"].ToString() == "üretim")
+                                {
+                                    <span class="badge badge-success rounded-pill d-inline">Üretim</span>
+                                }
+                                else if (ViewData["well_type"].ToString() == "tespit")
+                                {
+                                    <span class="badge badge-info rounded-pill d-inline">Tespit</span>
+                                }
+
                             }
-                            else if (ViewData["well_type"].ToString() == "üretim")
-                            {
-                                <span class="badge badge-success rounded-pill d-inline">Üretim</span>
-                            }
-                            else if (ViewData["well_type"].ToString() == "tespit")
-                            {
-                                <span class="badge badge-info rounded-pill d-inline">Tespit</span>
-                            }
+                        </span>
 
-                        }
-                    </span>
+                        <div asp-for="Name" class="name">@ViewData["name"]</div>
 
-                    <div asp-for="Name" class="name">@ViewData["name"]</div>
+                        <p asp-for="Latitude">
+                            Enlem: @ViewData["latitude"]
+                        </p>
+                        <p asp-for="Longitude">
+                            Boylam: @ViewData["longitude"]
+                        </p>
+                        <div class="input-group">
+                            <span class="input-group-text ">Formasyon Derinliğini Güncelleyin</span>
 
-                    <p asp-for="Latitude">
-                        Enlem: @ViewData["latitude"]
-                    </p>
-                    <p asp-for="Longitude">
-                        Boylam: @ViewData["longitude"]
-                    </p>
-                    <div class="input-group">
-                        <span class="input-group-text ">Formasyon Derinliğini Güncelleyin</span>
-                        <select class="form-select " name="Form_type" required>
-                            <option value="@Model.Form_type"> @Model.Form_type </option>
-                        </select>
-                        <input type="text" name="Form_meter" class="form-control" placeholder="@Model.Form_meter" required />
+                            <select class="form-select " name="formationType" required>
+                                <option value="@Model.FormationType"> @Model.FormationType </option>
+                            </select>
 
+                            <input type="text" name="formationMeter" class="form-control" placeholder="@Model.FormationMeter" required />
+                        </div>
+                        <button type="submit" name="submit">Formasyonu Güncelle</button>
                     </div>
-                    <button type="submit" name="submit">Formasyonu Güncelle</button>
                 </div>
             </div>
-        </div>
-    </body>
-</form>
+        </body>
+    </form>
 
+</body>
 </html>
