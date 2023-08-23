@@ -1,11 +1,9 @@
-﻿namespace TpaoProject1.Model
+namespace TpaoWebApp.Model
 {
     public class WellAndFormation
     {
-        public WellTop? well { get; set; }
-
-        public List<Formation>? formation { get; set; }
-
-        public Dictionary<string, string> color { get; set; }
+        public WellTop? Well { get; set; }
+        public List<Formation>? Formation { get; set; }
+        public Dictionary<string, string> Color { get; set; }
     }
 }
