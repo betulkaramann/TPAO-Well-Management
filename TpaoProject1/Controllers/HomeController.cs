@@ -2,12 +2,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using TpaoWebApp.Areas.Identity.Data;
-using TpaoWebApp.Data;
-using TpaoWebApp.Model;
-using TpaoWebApp.Models;
+using TpaoProject1.Areas.Identity.Data;
+using TpaoProject1.Data;
+using TpaoProject1.Model;
+using TpaoProject1.Models;
 
-namespace TpaoWebApp.Controllers
+namespace TpaoProject1.Controllers
 {
     public class HomeController : BaseController
     {
