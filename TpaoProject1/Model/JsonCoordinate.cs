@@ -1,4 +1,4 @@
-﻿namespace TpaoProject1.Model
+namespace TpaoWebApp.Model
 {
 	public class HatKoordinat
 	{
