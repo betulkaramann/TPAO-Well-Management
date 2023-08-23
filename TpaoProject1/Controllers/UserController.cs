@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
-namespace TpaoProject1.Controllers
+namespace TpaoWebApp.Controllers
 {
     public class UserController : Controller
     {
