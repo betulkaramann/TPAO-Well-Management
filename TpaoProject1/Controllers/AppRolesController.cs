@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using TpaoWebApp.Data;
+using TpaoProject1.Data;
 using Microsoft.EntityFrameworkCore;
-using TpaoWebApp.Models;
-using TpaoWebApp.Areas.Identity.Data;
+using TpaoProject1.Models;
+using TpaoProject1.Areas.Identity.Data;
 
-namespace TpaoWebApp.Controllers
+namespace TpaoProject1.Controllers
 {
 	public class AppRolesController : Controller
 	{
