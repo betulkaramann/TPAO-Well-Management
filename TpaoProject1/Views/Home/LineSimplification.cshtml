@@ -1,8 +1,9 @@
-﻿@using Newtonsoft.Json;
-@using TpaoProject1.Model;
+@using Newtonsoft.Json;
+@using TpaoWebApp.Model;
+
 @using Microsoft.AspNetCore.Identity
-@using TpaoProject1.Areas.Identity.Data;
-@model TpaoProject1.Model.JsonDataModel;
+@using TpaoWebApp.Areas.Identity.Data;
+@model TpaoWebApp.Model.JsonDataModel;
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -23,7 +24,7 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-
+    
     <style>
 
         :root {
@@ -35,6 +36,7 @@
             --border-radius-10: 10px;
             --content-max-width: 450px;
             --black: #101112;
+            
         }
 
         .fIGwjR {
@@ -251,7 +253,7 @@
                         processData: false,
                         contentType: false,
                         success: function (response) {
-
+                            
                             Swal.fire({
                                 title: 'Başarılı!',
                                 text: 'Dosya başarıyla yüklendi!',
@@ -259,7 +261,7 @@
                                 confirmButtonText: 'Tamam'
                             });
                             window.location.href = "/Home/ViewMap";
-
+                            
                         },
                         error: function (error) {
                             Swal.fire({
