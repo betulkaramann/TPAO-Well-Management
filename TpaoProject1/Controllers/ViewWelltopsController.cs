@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
-using TpaoWebApp.Areas.Identity.Data;
-using TpaoWebApp.Data;
-using TpaoWebApp.Model;
-using TpaoWebApp.Models;
+using TpaoProject1.Areas.Identity.Data;
+using TpaoProject1.Data;
+using TpaoProject1.Model;
+using TpaoProject1.Models;
 using X.PagedList;
 
 namespace TpaoWebApp.Controllers
