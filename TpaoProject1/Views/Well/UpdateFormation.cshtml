@@ -13,9 +13,9 @@
         <style>
             #container {
                 max-width: 600px;
-                max-height: 20px;
                 margin: 0 auto;
-                margin-top: 5vh;
+                margin-top: 10vh;
+                margin-bottom: 15vh;
             }
 
             .card {
@@ -69,10 +69,13 @@
             .alert{
                 margin-top:20px;
             }
+
+            body{
+                margin-bottom: 20px;
+            }
         </style>
     </head>
    
-    <body>
     @if (TempData["Error"] != null)
     {
         if (TempData["Error"].ToString() == "Smaller")
@@ -146,5 +149,4 @@
         </body>
     </form>
 
-</body>
 </html>
