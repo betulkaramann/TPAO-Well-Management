@@ -1,0 +1,444 @@
+@using TpaoWebApp.Model;
+@model UserRolesViewModel
+@using Microsoft.AspNetCore.Identity
+@using TpaoWebApp.Areas.Identity.Data;
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bootstrap Simple Data Table</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script>
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 6,
+                center: {
+                    lat: 38.934934, lng: 34.861613
+
+                },
+            });
+
+            setMarkers(map);
+        }
+
+        @{
+            List<object[]> wellData = new List<object[]>();
+
+            foreach (var kuyu in Model.Kuyular)
+            {
+                var name = kuyu.Name;
+                double latitude = double.Parse(kuyu.Latitude);
+                double longitude = double.Parse(kuyu.Longitude);
+
+                wellData.Add(new object[] { name, latitude, longitude, wellData.Count() + 1 });
+            }
+        }
+
+
+                const wells = @Html.Raw(Json.Serialize(wellData));
+
+        function setMarkers(map) {
+            
+            const image = {
+                url: "/css/wellicon.png",
+                
+                size: new google.maps.Size(32, 32),
+                
+                origin: new google.maps.Point(0, 0),
+                
+                anchor: new google.maps.Point(0, 32),
+            };
+            
+            const shape = {
+                coords: [1, 1, 1, 20, 18, 20, 18, 1],
+                type: "poly",
+            };
+
+            for (let i = 0; i < wells.length; i++) {
+                const well = wells[i];
+
+                const marker = new google.maps.Marker({
+                    position: { lat: well[1], lng: well[2] },
+                    map,
+                    icon: image,
+                    shape: shape,
+                    title: well[0],
+                    zIndex: well[3],
+                });
+
+                
+                marker.addListener("click", () => {
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: well[0],
+                    });
+                    infoWindow.open(map, marker); 
+                });
+            }
+
+        }
+
+        window.initMap = initMap;
+
+    </script>
+    <style>
+
+        #map {
+            height: 400px;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: #566787;
+            background: #f5f5f5;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .table-responsive {
+            margin: 30px 0;
+        }
+
+        .table-wrapper {
+            min-width: 1000px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 1px 1px rgba(0,0,0,.05);
+        }
+
+        .table-title {
+            padding-bottom: 10px;
+            margin: 0 0 10px;
+            min-width: 100%;
+        }
+
+            .table-title h2 {
+                margin: 8px 0 0;
+                font-size: 22px;
+            }
+
+        .search-box {
+            position: relative;
+            float: right;
+        }
+
+            .search-box input {
+                height: 34px;
+                border-radius: 20px;
+                padding-left: 35px;
+                border-color: #ddd;
+                box-shadow: none;
+            }
+
+                .search-box input:focus {
+                    border-color: #3FBAE4;
+                }
+
+            .search-box i {
+                color: #a0a5b1;
+                position: absolute;
+                font-size: 19px;
+                top: 8px;
+                left: 10px;
+            }
+
+        table.table tr th, table.table tr td {
+            border-color: #e9e9e9;
+        }
+
+        table.table-striped tbody tr:nth-of-type(odd) {
+            background-color: #fcfcfc;
+        }
+
+        table.table-striped.table-hover tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        table.table th i {
+            font-size: 13px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        table.table td:last-child {
+            width: 130px;
+        }
+
+        table.table td a {
+            color: #a0a5b1;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+            table.table td a.view {
+                color: #03A9F4;
+            }
+
+            table.table td a.edit {
+                color: #FFC107;
+            }
+
+            table.table td a.delete {
+                color: #E34724;
+            }
+
+        table.table td i {
+            font-size: 19px;
+        }
+
+        .pagination {
+            float: right;
+            margin: 0 0 5px;
+        }
+
+            .pagination li a {
+                border: none;
+                font-size: 95%;
+                width: 30px;
+                height: 30px;
+                color: #999;
+                margin: 0 2px;
+                line-height: 30px;
+                border-radius: 30px !important;
+                text-align: center;
+                padding: 0;
+            }
+
+                .pagination li a:hover {
+                    color: #666;
+                }
+
+            .pagination li.active a {
+                background: #03A9F4;
+            }
+
+                .pagination li.active a:hover {
+                    background: #0397d6;
+                }
+
+            .pagination li.disabled i {
+                color: #ccc;
+            }
+
+            .pagination li i {
+                font-size: 16px;
+                padding-top: 6px
+            }
+
+        .hint-text {
+            float: left;
+            margin-top: 6px;
+            font-size: 95%;
+        }
+
+        .all {
+            display: flex;
+            justify-content: center;
+            color: red;
+        }
+
+        .icon-location {
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            text-align: center;
+        }
+
+        .all a {
+            display: inline-block; 
+            margin-right: 10px; 
+        }
+
+        .wrapper_wgC-k {
+            width: calc(100% - 3.2rem);
+            margin-left: auto;
+            margin-right: auto;
+            justify-content: center;
+            text-align: center;
+            align-items: center;
+        }
+
+
+        .content_Z9h8v {
+            padding-bottom: 5.6rem;
+            -webkit-box-shadow: inset 0 -0.1rem 0 0 var(--very-light-pink-three);
+            box-shadow: inset 0 -0.1rem 0 0 var(--very-light-pink-three);
+        }
+
+        .p-tag {
+            margin: 0.8rem 0 0;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: -0.032rem;
+            text-align: center;
+            color: var(--black);
+        }
+
+        .h1-tag {
+            font-size: 2.8rem;
+            margin: 0;
+            font-weight: 600;
+            font-stretch: normal;
+            line-height: 1.5;
+            letter-spacing: 0.033rem;
+            color: var(--black);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .table-responsive {
+            max-height: 300px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+</head>
+<body>
+    @if (Model.Kuyular.Count() > 0)
+    {
+        <div class="container-xl">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+
+                    <table class="table table-striped table-hover table-bordered">
+                        <thead class="bg-light">
+                            <tr>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <th>Kullanıcı</th>
+                                }
+                                <th>Kuyu Adı</th>
+                                <th>Kuyu Tipi</th>
+                                <th>Enlem</th>
+                                <th>Boylam</th>
+                                <th>Oluşturma Tarihi</th>
+                                <th>Güncelleme Tarihi</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var wells in Model.Kuyular)
+                            {
+                                <tr>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <td>
+                                            <div class="d-flex align-items-center">
+
+                                                <div class="ms-3">
+                                                    <p class="fw-bold mb-1">@UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName</p>
+                                                    <p class="text-muted mb-0">@UserManager.GetUserAsync(User).Result.Email</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    }
+                                    <td>
+                                        <p class="fw-normal mb-1">@wells.Name</p>
+                                        <p class="text-muted mb-0">@wells.City</p>
+                                    </td>
+                                    <td>
+                                        @{
+                                            if (wells.WellTopType == "arama")
+                                            {
+                                                <span class="badge badge-primary rounded-pill d-inline">Arama</span>
+                                            }
+                                            else if (wells.WellTopType == "üretim")
+                                            {
+                                                <span class="badge badge-success rounded-pill d-inline">Üretim</span>
+                                            }
+                                            else if (wells.WellTopType == "tespit")
+                                            {
+                                                <span class="badge badge-info rounded-pill d-inline">Tespit</span>
+                                            }
+
+                                        }
+
+                                    </td>
+
+                                    <td>
+                                        <p class="fw-normal mb-1">@wells.Latitude</p>
+                                    </td>
+                                    <td>
+                                        <p class="fw-normal mb-1">@wells.Longitude</p>
+                                    </td>
+                                    <td>@wells.InsertionDate</td>
+                                    <td>@wells.UpdateDate</td>
+
+                                    <td class="icon-location">
+                                        <div class="all">
+                                            <a asp-controller="Well" asp-action="ViewWell" asp-route-id="@wells.Id" class="view" title="Detayları Görüntüle"><i class="fa fa-eye"></i></a>
+                                            <a asp-controller="ViewWelltops" asp-action="Update" asp-route-id="@wells.Id" class="edit" title="Düzenle"><i class="fa fa-pencil"></i></a>
+
+                                            <a asp-controller="ViewWelltops" asp-action="Delete" asp-route-id="@wells.Id" title="Kaydı Sil" >
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+            <div id="map"></div>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU_pWP66-BTzvW7AnEcQRSaBPutMzWxU4&callback=initMap&v=weekly"
+                    defer></script>
+
+        </div>
+    }
+    else
+    {
+        <div class="wrapper_wgC-k">
+            <div title="" role="button" aria-label="animation" tabindex="0" overflow: hidden; margin: 100px auto; outline: none;">
+                <img src="~/css/empty_state.png" width="400" height="300" preserveAspectRatio="xMidYMid slice" style="transform: translate3d(0px, 0px, 0px);">
+                <defs><clipPath id="__lottie_element_2"><rect width="350" height="358" x="0" y="0"></rect></clipPath></defs>
+                <g clip-path="url(#__lottie_element_2)">
+                    <g style="display: block;" transform="matrix(6.9834303855896,0,0,6.9834303855896,29.225692749023438,0.021209716796875)" opacity="1">
+                        <g opacity="1" transform="matrix(1,0,0,1,15.25,42.5)"><path fill="rgb(71,71,71)" fill-opacity="1" d=" M0,-1.75 C0,-1.75 -0.14399999380111694,-1.74399995803833 -0.14399999380111694,-1.74399995803833 C-1.0420000553131104,-1.6710000038146973 -1.75,-0.9179999828338623 -1.75,0 C-1.75,0.9660000205039978 -0.9660000205039978,1.75 0,1.75 C0.9660000205039978,1.75 1.75,0.9660000205039978 1.75,0 C1.75,-0.9179999828338623 1.0420000553131104,-1.6710000038146973 0.14399999380111694,-1.74399995803833 C0.14399999380111694,-1.74399995803833 0,-1.75 0,-1.75z"></path></g>
+                    </g>
+                    <g style="display: block;" transform="matrix(6.9834303855896,0,0,6.9834303855896,11.75823974609375,0.021209716796875)" opacity="1">
+                        <g opacity="1" transform="matrix(1,0,0,1,30.25,42.5)">
+                            <path fill="rgb(71,71,71)" fill-opacity="1" d=" M0,-1.75 C0,-1.75 -0.14399999380111694,-1.74399995803833 -0.14399999380111694,-1.74399995803833 C-1.0429999828338623,-1.6710000038146973 -1.75,-0.9179999828338623 -1.75,0 C-1.75,0.9660000205039978 -0.9660000205039978,1.75 0,1.75 C0.9660000205039978,1.75 1.75,0.9660000205039978 1.75,0 C1.75,-0.9179999828338623 1.0429999828338623,-1.6710000038146973 0.14399999380111694,-1.74399995803833 C0.14399999380111694,-1.74399995803833 0,-1.75 0,-1.75z"></path>
+                        </g>
+                    </g><g style="display: block;" transform="matrix(5.511742115020752,0,0,2.37312650680542,53.72967529296875,150.62677001953125)" opacity="1">
+                        <g opacity="1" transform="matrix(1.0295000076293945,0,0,1,21.82900047302246,21.476999282836914)">
+                            <path fill="rgb(255,95,0)" fill-opacity="1" d=" M-13.78600025177002,-6.4770002365112305 C-13.78600025177002,-6.4770002365112305 -13.692999839782715,-6.4710001945495605 -13.692999839782715,-6.4710001945495605 C-13.692999839782715,-6.4710001945495605 13.770999908447266,-6.4710001945495605 13.770999908447266,-6.4710001945495605 C13.805999755859375,-6.4710001945495605 13.83899974822998,-6.4679999351501465 13.868000030517578,-6.460000038146973 C14.059000015258789,-6.410999774932861 14.182999610900879,-6.230999946594238 14.170999526977539,-6.039999961853027 C14.170999526977539,-6.039999961853027 14.15999984741211,-5.9670000076293945 14.15999984741211,-5.9670000076293945 C14.15999984741211,-5.9670000076293945 11.847999572753906,3.4489998817443848 11.847999572753906,3.4489998817443848 C11.420000076293945,5.195000171661377 9.916000366210938,6.439000129699707 8.164999961853027,6.519999980926514 C8.164999961853027,6.519999980926514 7.984000205993652,6.5229997634887695 7.984000205993652,6.5229997634887695 C7.984000205993652,6.5229997634887695 -11.253000259399414,6.5229997634887695 -11.253000259399414,6.5229997634887695 C-11.692999839782715,6.5229997634887695 -14.182000160217285,-6.52400016784668 -13.78600025177002,-6.4770002365112305z"></path>
+                        </g>
+                    </g>
+                    <g transform="matrix(5.818960189819336,0,0,5.818960189819336,46.98388671875,54.441253662109375)" opacity="1" style="display: block;"><g opacity="1" transform="matrix(1,0,0,1,25.016000747680664,19.246000289916992)"><path stroke-linecap="round" stroke-linejoin="round" fill-opacity="0" stroke="rgb(72,72,72)" stroke-opacity="1" stroke-width="2.5" d=" M-18.302000045776367,-8.055999755859375 C-18.238000869750977,-8.034000396728516 -18.170000076293945,-8.019000053405762 -18.10099983215332,-8.01099967956543 C-18.10099983215332,-8.01099967956543 -17.983999252319336,-8.003999710083008 -17.983999252319336,-8.003999710083008 C-17.983999252319336,-8.003999710083008 16.483999252319336,-8.003999710083008 16.483999252319336,-8.003999710083008 C16.527999877929688,-8.003999710083008 16.56800079345703,-8 16.604000091552734,-7.989999771118164 C16.8439998626709,-7.929999828338623 16.999000549316406,-7.709000110626221 16.983999252319336,-7.4720001220703125 C16.983999252319336,-7.4720001220703125 16.969999313354492,-7.382999897003174 16.969999313354492,-7.382999897003174 C16.969999313354492,-7.382999897003174 14.069999694824219,4.2170000076293945 14.069999694824219,4.2170000076293945 C13.531999588012695,6.368000030517578 11.645000457763672,7.89900016784668 9.447999954223633,7.999000072479248 C9.447999954223633,7.999000072479248 9.220000267028809,8.003999710083008 9.220000267028809,8.003999710083008 C9.220000267028809,8.003999710083008 -14.92199993133545,8.003999710083008 -14.92199993133545,8.003999710083008 C-14.9399995803833,8.003999710083008 -14.958000183105469,8.003999710083008 -14.975000381469727,8.005000114440918"></path></g></g><g transform="matrix(5.818960189819336,0,0,5.818960189819336,46.98388671875,54.441253662109375)" opacity="1" style="display: block;"><g opacity="1" transform="matrix(1,0,0,1,17.5,19.253000259399414)"><path stroke-linecap="round" stroke-linejoin="round" fill-opacity="0" stroke="rgb(72,72,72)" stroke-opacity="1" stroke-width="2" d=" M-16.761999130249023,-17.0310001373291 C-16.71500015258789,-17.01799964904785 -16.666000366210938,-17.009000778198242 -16.617000579833984,-17.003000259399414 C-16.617000579833984,-17.003000259399414 -16.5,-16.996999740600586 -16.5,-16.996999740600586 C-16.5,-16.996999740600586 -14.531999588012695,-16.996999740600586 -14.531999588012695,-16.996999740600586 C-13.611000061035156,-16.996999740600586 -12.817000389099121,-16.3700008392334 -12.593000411987305,-15.491000175476074 C-12.593000411987305,-15.491000175476074 -12.5600004196167,-15.333000183105469 -12.5600004196167,-15.333000183105469 C-12.5600004196167,-15.333000183105469 -7.285999774932861,15.666000366210938 -7.285999774932861,15.666000366210938 C-6.9720001220703125,17.523000717163086 -5.4070000648498535,18.89900016784668 -3.5429999828338623,18.992000579833984 C-3.5429999828338623,18.992000579833984 -3.3420000076293945,18.996999740600586 -3.3420000076293945,18.996999740600586 C-3.3420000076293945,18.996999740600586 16.5,18.996999740600586 16.5,18.996999740600586 C16.597999572753906,18.996999740600586 16.691999435424805,18.982999801635742 16.7810001373291,18.957000732421875"></path></g></g>
+                </g>
+            </div><div class="content_Z9h8v">
+                <h1 class="h1-tag">Kayıtlı kuyu bulunamadı</h1>
+                <p class="p-tag">Kuyu eklemek ve harita erişimi için<br>kuyu ekleme sayfasında tıklayınız.</p>
+            </div>
+        </div>
+    }
+</body>
+</html>
+<partial name="_NotificationPartial" />
