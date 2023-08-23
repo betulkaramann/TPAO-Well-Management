@@ -1,4 +1,4 @@
-﻿@using TpaoProject1.Model;
+@using TpaoProject1.Model;
 @{
     ViewData["Title"] = "Add Formation";
 }
@@ -12,9 +12,9 @@
     <style>
         #container {
             max-width: 600px;
-            max-height: 20px;
             margin: 0 auto;
-            margin-top: 5vh;
+            margin-top: 10vh;
+            margin-bottom: 15vh;
         }
 
         .card {
@@ -69,10 +69,13 @@
         .alert {
             margin-top: 20px;
         }
+
+        body {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
-<body>
     @if (TempData["status"] != null)
     {
         if (TempData["status"].ToString() == "SameFormation")
@@ -147,5 +150,4 @@
             </div>
         </body>
     </form>
-</body>
 </html>
