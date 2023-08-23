@@ -1,4 +1,4 @@
-﻿@using TpaoProject1.Model;
+﻿@using TpaoWebApp.Model;
 @{
     ViewData["Title"] = "Add Formation";
 }
@@ -12,9 +12,9 @@
     <style>
         #container {
             max-width: 600px;
+            max-height: 20px;
             margin: 0 auto;
-            margin-top: 10vh;
-            margin-bottom: 15vh;
+            margin-top: 5vh;
         }
 
         .card {
@@ -23,7 +23,6 @@
             padding: 8px;
             border-radius: 12px;
         }
-
         .tag {
             padding: 4px 8px;
             border: 1px solid #e5eaed;
@@ -70,87 +69,83 @@
         .alert {
             margin-top: 20px;
         }
-
-        body {
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 
-
-
-@*formasyondak verilerin kontrol noktası*@
-@if (TempData["status"] != null)
-{
-    if (TempData["status"].ToString() == "same_formation")
+<body>
+    @if (TempData["status"] != null)
     {
-        <div style="margin-top:15px;" class="alert alert-primary" role="alert">
-            Girilen formasyon zaten var
-        </div>
+        if (TempData["status"].ToString() == "SameFormation")
+        {
+            <div style="margin-top:15px;" class="alert alert-primary" role="alert">
+                Girilen formasyon zaten var
+            </div>
+        }
+        else if (TempData["status"].ToString() == "LowerFormation")
+        {
+            <div style="margin-top:15px;" class="alert alert-warning" role="alert">
+                Yeni formasyon metresi önceki formasyondan daha küçük olamaz
+            </div>
+        }
+        else if (TempData["status"].ToString() == "OutofOrder")
+        {
+            <div style="margin-top:15px; " class="alert alert-info" role="alert">
+                Formasyon sınırları 0 ila 10000 arasında olmalıdır
+            </div>
+        }
     }
-    else if (TempData["status"].ToString() == "lower_formation")
-    {
-        <div style="margin-top:15px;" class="alert alert-warning" role="alert">
-            Yeni formasyon metresi önceki formasyondan daha küçük olamaz
-        </div>
-    }
-    else if (TempData["status"].ToString() == "out of order")
-    {
-        <div style="margin-top:15px; " class="alert alert-info" role="alert">
-            Formasyon sınırları 0 ila 10000 arasında olmalıdır
-        </div>
-    }
-}
-<form asp-controller="Well" asp-action="AddFormation" method="post">
-    <body>
-        <div id="container">
-            <div class="card">
-                <img src="https://trthaberstatic.cdn.wp.trt.com.tr/resimler/1458000/1458031.jpg" style="padding:10px" alt="Lago di Braies">
-                <div class="card__details">
-                    <span class="tag">
-                        @{
-                            if (Model.WellTopType == "arama")
-                            {
-                                <span class="badge badge-primary rounded-pill d-inline">Arama</span>
-                            }
-                            else if (Model.WellTopType == "üretim")
-                            {
-                                <span class="badge badge-success rounded-pill d-inline">Üretim</span>
-                            }
-                            else if (Model.WellTopType == "tespit")
-                            {
-                                <span class="badge badge-info rounded-pill d-inline">Tespit</span>
-                            }
+    <form asp-controller="Well" asp-action="AddFormation" method="post">
+        
+        <body>
+            <div id="container">
 
-                        }
-                    </span>
-                    <div asp-for="Name" class="name">@Model.Name</div>
-                    <p asp-for="Latitude">
-                        Enlem: @Model.Latitude
-                    </p>
-                    <p asp-for="Longitude">
-                        Boylam: @Model.Longitude
-                    </p>
-                    <div class="input-group">
-                        <span class="input-group-text ">Enter Formation Type and Meter</span>
-                        <select class="form-select " name="Form_type" required>
-                            <option disabled>Select Formation Type</option>
+                <div class="card">
+                    <img src="https://trthaberstatic.cdn.wp.trt.com.tr/resimler/1458000/1458031.jpg" style="padding:10px" alt="Lago di Braies">
+
+                    <div class="card__details">
+
+                        <span class="tag">
                             @{
-                                //bütün formasyon türleri listelenir A dan Z ye kadar
-                                for (char i = 'A'; i <= 'Z'; i++)
+                                if (Model.WellTopType == "arama")
                                 {
-                                    <option value="@i"> @i </option>
+                                    <span class="badge badge-primary rounded-pill d-inline">Arama</span>
+                                }
+                                else if (Model.WellTopType == "üretim")
+                                {
+                                    <span class="badge badge-success rounded-pill d-inline">Üretim</span>
+                                }
+                                else if (Model.WellTopType == "tespit")
+                                {
+                                    <span class="badge badge-info rounded-pill d-inline">Tespit</span>
                                 }
                             }
-                        </select>
-                        <input type="text" name="Form_meter" class="form-control" placeholder="0-10000" required />
+                        </span>
+                        <div asp-for="Name" class="name">@Model.Name</div>
 
+                        <p asp-for="Latitude">
+                            Enlem: @Model.Latitude
+                        </p>
+                        <p asp-for="Longitude">
+                            Boylam: @Model.Longitude
+                        </p>
+                        <div class="input-group">
+                            <span class="input-group-text ">Enter Formation Type and Meter</span>
+                            <select class="form-select " name="formationType" required>
+                                <option disabled>Select Formation Type</option>
+                                @{
+                                    for (char i = 'A'; i <= 'Z'; i++)
+                                    {
+                                        <option value="@i"> @i </option>
+                                    }
+                                }
+                            </select>
+                            <input type="text" name="formationMeter" class="form-control" placeholder="0-10000" required />
+                        </div>
+                        <button type="submit" name="submit">Formasyon Ekle</button>
                     </div>
-                    <button type="submit" name="submit">Formasyon Ekle</button>
                 </div>
             </div>
-        </div>
-    </body>
-</form>
-
+        </body>
+    </form>
+</body>
 </html>
