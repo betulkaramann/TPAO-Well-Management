@@ -3,40 +3,309 @@
 <head>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+    <style>
+
+        <style >
+
+        :root {
+            --primary: #17C969;
+            --brand-gradient: linear-gradient(107.65deg,#17C969 17.53%,#005DBB 94.64%);
+            --body-font: Inter,sans-serif;
+            --bg-color: #101112;
+            --secondary-bg-color: rgba(255,255,255,0.02);
+            --border-radius-10: 10px;
+            --content-max-width: 450px;
+            --black: #101112;
+        }
+
+        .fIGwjR {
+            max-width: 1200px;
+            padding: 0px 20px;
+            margin: 0px auto;
+        }
+
+        .kTwAJW {
+            max-width: 750px;
+            margin: 40px auto 0px;
+            text-align: center;
+        }
+
+        .dEBCvL {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px dashed rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+            margin: 40px auto 80px;
+            max-width: 600px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .Tyvht {
+            display: flex;
+            flex-direction: column;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .gHEHFI {
+            display: flex;
+            -webkit-box-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            align-items: center;
+            width: 100%;
+            height: auto;
+        }
+
+        .kbmqOG {
+            display: flex;
+            flex-direction: column;
+            -webkit-box-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+        }
+
+        .jblypF {
+            display: flex;
+            flex-direction: column;
+            -webkit-box-align: center;
+            align-items: center;
+            text-align: center;
+            background-color: #bb242b;
+            width: 20%;
+            padding: 16px;
+            border-radius: 0px;
+            border-radius: 8px;
+            border: 2px solid rgb(37, 54, 70);
+        }
+
+        .ipUDSd {
+            width: auto;
+            height: 60px;
+            background: var(--brand-gradient);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            padding: 0px 22px;
+            font-family: var(--body-font);
+            font-style: normal;
+            letter-spacing: var(--letter-spacing);
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 150%;
+            color: var(--white-90);
+            border-radius: var(--border-radius-10);
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        .eSlaav {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ddmRyP {
+            width: 20px;
+            height: 20px;
+        }
+
+        .bJuAfh {
+            font-family: var(--body-font);
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 29px;
+            letter-spacing: 0.03em;
+            color: var(--white-80);
+        }
+
+        .hRkHyi {
+            margin-top: 15px;
+        }
+
+
+        .ddmRyP {
+            width: 20px;
+            height: 20px;
+        }
+
+        .ipUDSd {
+            width: auto;
+            height: 60px;
+            background: var(--brand-gradient);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            -webkit-box-align: center;
+            align-items: center;
+            padding: 0px 22px;
+            font-family: var(--body-font);
+            font-style: normal;
+            letter-spacing: var(--letter-spacing);
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 150%;
+            color: var(--white-90);
+            border-radius: var(--border-radius-10);
+            white-space: nowrap;
+            text-align: center;
+        }
+
+
+        .grid {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-color: #d3f8e2;
+            width: 100%;
+            padding: 16px;
+            border-radius: 8px;
+            border: 2px solid rgb(37, 54, 70);
+        }
+
+        .table-responsive {
+            margin: 30px 0;
+        }
+
+        #map {
+            height: 400px;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: #566787;
+            background: #f5f5f5;
+            font-family: 'Roboto', sans-serif;
+        }
+
+
+
+        .p-tag {
+            margin: 0.8rem 0 0;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: -0.032rem;
+            text-align: center;
+            color: var(--black);
+        }
+
+        .h1-tag {
+            font-size: 2.8rem;
+            margin: 0;
+            font-weight: 600;
+            font-stretch: normal;
+            line-height: 1.5;
+            letter-spacing: 0.033rem;
+            color: var(--black);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .table-responsive {
+            max-height: 300px;
+        }
+
+        #renkSecimi {
+            margin-bottom: 10px;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: white;
+            color: #333;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #processButton {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #processButton:hover {
+            background-color: #0056b3;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-input-label {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div id="plot"></div>
-    <input type="file" id="excelFileInput" accept=".xls" />
-    <input type="file" id="fileInput" accept=".json" multiple />
-    <input type="file" id="jsonFileInput">
-    <select id="renkSecimi" aria-label="Default select Viridis">
-        <option selected value="Viridis">Renk Seçimi</option>
-        <option value="YlOrRd">YlOrRd</option>
-        <option value="YlGnBu">YlGnBu</option>
-        <option value="RdBu">RdBu</option>
-        <option value="Portland">Portland</option>
-        <option value="Picnic">Picnic</option>
-        <option value="Jet">Jet</option>
-        <option value="Hot">Hot</option>
-        <option value="Greys">Greys</option>
-        <option value="Greens">Greens</option>
-        <option value="Electric">Electric</option>
-        <option value="Earth">Earth</option>
-        <option value="Bluered">Bluered</option>
-        <option value="Blackbody">Blackbody</option>
-    </select>
-    <button id="processButton">Dosyaları İşle</button>
-    <div id="plot" style="width: 900px; height: 900px;"></div>
+  
+   
+
+    <div style="position: absolute; left: 0px; top: 0px; z-index: 107; width: 100%;"></div>
+    <div class="global-styled-components__Container-sc-b9pb9l-0 fIGwjR grid">
+        <h2 class="global-styled-components__H1-sc-b9pb9l-3 Upload__StyledH1-sc-11jl0r6-0 gkkdba kTwAJW">3D Kuyu Görselleştirme</h2>
+
+        <h6 class="global-styled-components__H1-sc-b9pb9l-3 Upload__StyledH1-sc-11jl0r6-0 gkkdba kTwAJW">Kuyu verisi ve yüzey verileri dosyalarını seçin.</h6>
+
+        <div class="Upload__UploadContainer-sc-11jl0r6-1 dEBCvL">
+            <div class="Upload__UploadWrapper-sc-11jl0r6-2 kbmqOG">
+                <div class="Upload__DropText-sc-11jl0r6-3 eSlaav">
+                    <div class="SupportedFormats__Content-sc-1lsf5mw-0 SupportedFormats__FormatWrapper-sc-1lsf5mw-1 mb-4">
+                        <div class="SupportedFormats__Label-sc-1lsf5mw-2 jWxHwJ">Kabul Edilen Formatlar: .json, .cvs</div>
+                    </div>
+				</div> 
+                <div id="plot"></div>
+                <input class="file-input-label" type="file" id="excelFileInput" accept=".xls" />
+                <input class="file-input-label" type="file" id="fileInput" accept=".json" multiple />
+                <input class="file-input-label" type="file" id="jsonFileInput">
+                <select id="renkSecimi" aria-label="Default select Viridis">
+                    <option selected value="Viridis">Renk Seçimi</option>
+                    <option value="YlOrRd">YlOrRd</option>
+                    <option value="YlGnBu">YlGnBu</option>
+                    <option value="RdBu">RdBu</option>
+                    <option value="Portland">Portland</option>
+                    <option value="Picnic">Picnic</option>
+                    <option value="Jet">Jet</option>
+                    <option value="Hot">Hot</option>
+                    <option value="Greys">Greys</option>
+                    <option value="Greens">Greens</option>
+                    <option value="Electric">Electric</option>
+                    <option value="Earth">Earth</option>
+                    <option value="Bluered">Bluered</option>
+                    <option value="Blackbody">Blackbody</option>
+				</select>
+                <button class="ipUDSd" style="display: flex; justify-content: center; align-items: center;" id="processButton">Dosyaları İşle</button>
+                <div id="plot"></div>
+            </div>
+        </div>
+    </div>
 
 
     <script>
-
         function degreesToRadians(degrees) {
             return degrees * (Math.PI / 180);
         }
 
         var scatterData;
-        var scatterData2;
         var surfaceData;
         var flag;
         const plotDiv = document.getElementById('plot');
@@ -107,9 +376,6 @@
         });
 
 
-
-
-
         // Excel data processing
         document.getElementById('excelFileInput').addEventListener('change', function (event) {
             var file = event.target.files[0];
@@ -153,7 +419,7 @@
                     tvd[i] = tvd[i] * (-1);
                 }
 
-                
+                // Creating the surface trace
                 scatterData = {
                     type: 'scatter3d',
                     mode: 'markers+lines',
@@ -181,40 +447,36 @@
         });
         var count = 0;
         var selectedFiles = 0;
-        document.getElementById('processButton').addEventListener('click', async function () {
+        document.getElementById('processButton').addEventListener('click', function () {
             var fileInput = document.getElementById('fileInput');
             var selectedFiles = fileInput.files;
-
-            flag = selectedFiles.length;
-            for (var i = 0; i < selectedFiles.length; i++) {
+            flag= selectedFiles.length;
+            for(var i = 0; i < selectedFiles.length; i++){
                 var file = selectedFiles[i];
-                await readSurfaceJson(file);
+                readSurfaceJson(file);
                 count++;
-
             }
-
+            
         });
-        
+
         var values = [];
-        async function readSurfaceJson(file) {
-            // JSON data processing
-            var reader = new FileReader();
+        function readSurfaceJson(file){
+        // JSON data processing
+            var reader = new FileReader(); 
 
             reader.onload = function (event) {
-
+                
                 var jsonData = JSON.parse(event.target.result);
 
-                const numRows = jsonData.bins[1];
-                const numCols = jsonData.bins[0];
+                const numRows = jsonData.bins[1]; 
+                const numCols = jsonData.bins[0]; 
                 const extent = jsonData.extent;
                 const extentX = jsonData.extent[0][0];
                 const extentY = jsonData.extent[0][1];
                 const increment = jsonData.increment;
                 const incrementX = jsonData.increment[0];
                 const incrementY = jsonData.increment[1];
-
-
-
+                
                 const xValues = [];
                 const yValues = [];
                 const zValues = [];
@@ -248,19 +510,15 @@
                     y: yValues,
                     z: zValues
                 });
-                resolve();
             };
             if (count == flag)
                 updatePlotly();
             reader.readAsText(file);
         }
-
+        
 
         function updatePlotly() {
             if (scatterData && scatterData2 && values.length == flag) {
-
-
-
                 var scatterLayout = {
                     scene: {
                         aspectmode: 'manual',
@@ -278,56 +536,22 @@
                         zaxis: {
                             autorange: 'true'
                         },
-
+                        camera: {
+                            eye: { x: 1.5, y: 1.5, z: 1.5 }, 
+                            center: { x: 0, y: 0, z: 0 },
+                            up: { x: 0, y: 0, z: 1 }      
+                        }
                     },
                     margin: {
                         t: 20,
                         b: 20,
-                        l: 20,
-                        r: 20
+                        l: 150,
+                        r: 150
                     },
                     width: 900,
                     height: 600
                 };
-
-
-                var arrowN = {
-                    type: 'cone',
-                    x: [400],
-                    y: [100],
-                    z: [-2000],
-                    u: [0],
-                    v: [200],
-                    w: [1],
-                    colorscale: [[0, 'red'], [1, 'red']],
-                    showscale: false,
-                    sizemode: 'absolute',
-                    anchor: 'tip',
-                };
-                var annotationN = {
-                    x: 400,
-                    y: 150,
-                    z: -2000,
-                    text: 'N',
-                    showarrow: false,
-                    font: {
-                        size: 12,
-                        color: 'red'
-                    }
-                };
-
-                var lineLayout = {
-                    title: 'Douleb',
-                    scene: {
-                        xaxis: { title: 'X Axis', },
-                        yaxis: { title: 'Y Axis', },
-                        zaxis: { title: 'Z Axis', },
-                        aspectmode: 'manuel',
-                        aspectratio: { x: 1, y: 1, z: 0.25 }
-
-                    }
-                };
-
+                
                 var surfaceTraces = values.map(function (surfaceData) {
                     var renkSecimiElementi = document.getElementById("renkSecimi");
                     var secilenDeger = renkSecimiElementi.value;
@@ -349,9 +573,10 @@
                 });
 
                 Plotly.newPlot('plot', [scatterData, scatterData2, ...surfaceTraces], scatterLayout);
-
-            }
+                
+          }  
         }
+
 
     </script>
 </body>
