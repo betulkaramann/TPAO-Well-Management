@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using TpaoWebApp.Data;
-using TpaoWebApp.Model;
-using TpaoWebApp.Models;
+using TpaoProject1.Data;
+using TpaoProject1.Model;
+using TpaoProject1.Models;
 using Newtonsoft.Json.Linq;
 
 
-namespace TpaoWebApp.Controllers
+namespace TpaoProject1.Controllers
 {
     public class WellController : Controller
     {
