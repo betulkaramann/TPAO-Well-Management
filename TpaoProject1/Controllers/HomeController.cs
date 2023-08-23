@@ -1,17 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
-using TpaoProject1.Areas.Identity.Data;
-using TpaoProject1.Controllers;
-using TpaoProject1.Data;
-using TpaoProject1.Model;
-using TpaoProject1.Models;
-using TpaoProject1.Areas.Identity.Data;
-using TpaoProject1.Data;
-using TpaoProject1.Model;
-using TpaoProject1.Models;
-using static Plotly.NET.StyleParam.DrawingStyle;
+using TpaoWebApp.Areas.Identity.Data;
+using TpaoWebApp.Data;
+using TpaoWebApp.Model;
+using TpaoWebApp.Models;
 
 namespace TpaoWebApp.Controllers
 {
@@ -29,71 +23,65 @@ namespace TpaoWebApp.Controllers
             _geocodingService = geocodingService;
 
         }
-
+        
         [HttpGet]
-        public async Task<IActionResult> Index()
-        {   //Kuyu sayısının tiplere göre dağılımı
-            var tespit = _dbContext.WellTops.Where(p => p.WellTopType == "tespit").Count();
-            var uretim = _dbContext.WellTops.Where(p => p.WellTopType == "üretim").Count();
-            var arama = _dbContext.WellTops.Where(p => p.WellTopType == "arama").Count();
-            var toplam = tespit + uretim + arama;
-            ViewBag.uretim = uretim;
-            ViewBag.arama = arama;
-            ViewBag.tespit = tespit;
-            ViewBag.toplam = toplam;
-            return View();
-        }
+		public async Task<IActionResult> Index()
+		{   //Kuyu sayısının tiplere göre dağılımı
+			var tespit = _dbContext.WellTops.Where(p => p.WellTopType == "tespit").Count();
+			var uretim = _dbContext.WellTops.Where(p => p.WellTopType == "üretim").Count();
+			var arama = _dbContext.WellTops.Where(p => p.WellTopType == "arama").Count();
+			var toplam = tespit + uretim + arama;
+			ViewBag.uretim = uretim;
+			ViewBag.arama = arama;
+			ViewBag.tespit = tespit;
+			ViewBag.toplam = toplam;
+			return View();
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> Index(WellTop model)
-        {
+		[HttpPost]
+		public async Task<IActionResult> Index(WellTop model)
+		{
             return View();
-        }
-
+		}
+      
         public async Task<IActionResult> LineSimplification()
         {
-            return View();
+			return View();
         }
-
-        public IActionResult History()
+                
+        public IActionResult History() 
         {
             return View();
         }
 
         public async Task<IActionResult> AddedWelltops()
-        {
-
-            var user = await _userManager.GetUserAsync(User);
-            var WellTopList = _dbContext.WellTops.ToList();
-
-
-            if (User.IsInRole("Admin"))
-            {
-                WellTopList = _dbContext.WellTops.ToList();
-            }
-            else
-            {
-                WellTopList = _dbContext.WellTops.Where(w => w.UserId == user.Id).ToList();
-            }
+        {       //Role göre kuyu gösterme işlemleri
+                var user = await _userManager.GetUserAsync(User);
+                var WellTopList = _dbContext.WellTops.ToList();
 
 
-            var users = _dbContext.Users.ToList();
+                if (User.IsInRole("Admin"))
+                {
+                    WellTopList = _dbContext.WellTops.ToList();
+                }
+                else
+                {
+                    WellTopList = _dbContext.WellTops.Where(w => w.UserId == user.Id).ToList();
+                }
+
+                var users = _dbContext.Users.ToList();
+
+                var viewModel = new UserRolesViewModel
+                {
+                    Kullanicilar = users,
+                    Kuyular = WellTopList
+                };
 
 
-            var viewModel = new UserRolesViewModel
-            {
-                Kullanicilar = users,
-                Kuyular = WellTopList
-
-
-            };
-
-
-            return View(viewModel);
-
+                return View(viewModel);            
         }
 
-        [HttpPost]
+		[HttpPost]
         public ActionResult UploadJson(IFormFile jsonFile)
         {   //Proje klasöründeki json dosyasını okuma işlemi
             if (jsonFile != null && jsonFile.Length > 0)
@@ -123,7 +111,7 @@ namespace TpaoWebApp.Controllers
                     ViewBag.listCount = pureList.Count;
 
                     ViewBag.pureListJson = JsonConvert.SerializeObject(pureList);
-
+                    
                     ViewBag.pureList = JsonConvert.SerializeObject(pureList);
 
                     TempData["pureList"] = JsonConvert.SerializeObject(pureList);
@@ -131,12 +119,12 @@ namespace TpaoWebApp.Controllers
                     return RedirectToAction("LineSimplification");
 
                 }
-            }
+            }         
             return View();
         }
         public IActionResult Line3D()
         {
-            return View();
+            return View();        
         }
 
         public ActionResult ViewMap()
