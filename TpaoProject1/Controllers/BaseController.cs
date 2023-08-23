@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace TpaoWebApp.Controllers
+namespace TpaoProject1.Controllers
 {
     public enum NotificationType
     {
