@@ -383,7 +383,6 @@
                                 <th>Boylam</th>
                                 <th>Oluşturma Tarihi</th>
                                 <th>Güncelleme Tarihi</th>
-                                <th>İşlemler</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -432,17 +431,6 @@
                                     <td>@wells.InsertionDate</td>
                                     <td>@wells.UpdateDate</td>
 
-                                    <td class="icon-location">
-                                        <div class="all">
-                                            <a asp-controller="Well" asp-action="ViewWell" asp-route-id="@wells.Id" class="view" title="Detayları Görüntüle"><i class="fa fa-eye"></i></a>
-                                            <a asp-controller="ViewWelltops" asp-action="Update" asp-route-id="@wells.Id" class="edit" title="Düzenle"><i class="fa fa-pencil"></i></a>
-
-                                            <a asp-controller="ViewWelltops" asp-action="Delete" asp-route-id="@wells.Id" title="Kaydı Sil">
-                                                <i style="color:red" class="fas fa-trash"></i>
-                                            </a>
-
-                                        </div>
-                                    </td>
                                 </tr>
                             }
                         </tbody>
