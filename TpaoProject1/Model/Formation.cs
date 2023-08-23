@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace TpaoWebApp.Model
+namespace TpaoProject1.Model
 {
     public class Formation
     {
