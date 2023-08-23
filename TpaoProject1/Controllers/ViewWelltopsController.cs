@@ -7,7 +7,7 @@ using TpaoProject1.Model;
 using TpaoProject1.Models;
 using X.PagedList;
 
-namespace TpaoWebApp.Controllers
+namespace TpaoProject1.Controllers
 {
     public class ViewWelltopsController : BaseController
     {
